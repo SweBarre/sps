@@ -3,15 +3,15 @@ This little tool searches for packages in SUSE products, it's uses the open API'
 
 ```
 sps --help
-Usage: sps [OPTIONS] COMMAND [ARGS]...
+Usage: sps.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --debug
-  --help   Show this message and exit.
+  --help  Show this message and exit.
 
 Commands:
-  package  Search for packages
-  product  Search for products
+  completion  Completion for shells
+  package     Search for packages
+  product     Search for products
 ```
 
 ## Install in python virtual environment
