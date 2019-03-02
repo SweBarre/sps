@@ -2,7 +2,7 @@
 This little tool searches for packages in SUSE products, it's uses the open API's at scc.suse.com
 
 ```
-./sps --help
+sps --help
 Usage: sps [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -18,7 +18,7 @@ Commands:
 Inorder to search for a package you have to have the product ID to specify in what product you want to seach for the specific package.
 To get the product ID you can do a product search.
 ```
-./sps product --help
+sps product --help
 Usage: sps product [OPTIONS] [PATTERN]
 
   Search for products
@@ -33,7 +33,7 @@ the default fielt to search in is *identifier*, but that can be overridden by th
 If no search PATTERN is given, all products will be returned
 Let's limit our package search to SLES 15 and x86_64 architecture
 ```
-./sps product SLES/15
+sps product SLES/15
 +------+------------------------------+---------+-------------------+---------+
 | id   | Name                         | Edition | Identifier        | Arch    |
 +------+------------------------------+---------+-------------------+---------+
@@ -51,7 +51,7 @@ The id for that product is **1575**
 
 ## Searching for a package
 ```
-./sps package --help
+sps package --help
 Usage: sps package [OPTIONS] PATTERN
 
   Search for packages
@@ -63,7 +63,7 @@ Options:
 
 we need to specify the product id on where we want to search so if we do a search for all package containing the word *vim* and  do that for *SLES 15 x86_64* product, the syntax would be
 ```
-./sps package --product 1575 vim 
+sps package --product 1575 vim 
 +---------------------------+-------------------+-------------+--------+-----------------------------+
 | Name                      | Version           | Release     | Arch   | Module(s)                   |
 +---------------------------+-------------------+-------------+--------+-----------------------------+
