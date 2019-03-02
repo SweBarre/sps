@@ -14,6 +14,24 @@ Commands:
   product  Search for products
 ```
 
+## Install in python virtual environment
+You need to install the build_basis pattern inorder to compile PyCurl
+```
+python3 -m venv venv
+source venv/bin/activate
+sudo zypper in -t pattern devel_basis
+sudo zypper in python3-devel
+export PYCURL_SSL_LIBRARY=openssl
+pip install -r requirements.txt
+```
+
+copy the sps shell-script to a location in your path (e.g. ~/bin or ~/.local/bin) and change the path to where you have the files and created the python virtual environment
+if you want the bash completion you can add the following row to ~./bashrc
+```bash
+source <(sps completion bash)
+```
+
+
 ## Getting the product ID
 Inorder to search for a package you have to have the product ID to specify in what product you want to seach for the specific package.
 To get the product ID you can do a product search.
@@ -121,23 +139,3 @@ sps package --product 1575 vim
 | vim-plugin-zoomwin        | 24                | bp150.2.3   | noarch | SUSE Package Hub            |
 +---------------------------+-------------------+-------------+--------+-----------------------------+
 ```
-
-
-
-## Install in python virtual environment
-You need to install the build_basis pattern inorder to compile PyCurl
-```
-python3 -m venv venv
-source venv/bin/activate
-sudo zypper in -t pattern devel_basis
-sudo zypper in python3-devel
-export PYCURL_SSL_LIBRARY=openssl
-pip install -r requirements.txt
-```
-
-copy the sps shell-script to a location in your path (e.g. ~/bin or ~/.local/bin) and change the path to where you have the files and created the python virtual environment
-if you want the bash completion you can add the following row to ~./bashrc
-```bash
-source <(sps completion bash)
-```
-
