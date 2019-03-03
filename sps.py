@@ -88,6 +88,9 @@ def package(ctx, product, pattern):
             for prod in products:
                 print(' - {}'.format(prod['identifier']))
             sys.exit(1)
+        if len(products) == 0:
+            sys.stderr.write('Error: Could not match "{}" to a product\n'.format(product))
+            sys.exit(1)
         product = products[0]['id']
     url = "{}?product_id={}&query={}".format(URL_PACKAGES, product, pattern)
     packages = fetch(url)
