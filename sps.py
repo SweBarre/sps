@@ -73,11 +73,22 @@ def main(ctx):
 
 
 @main.command()
-@click.option("--product", required=True, default=0, help="id of product to search in")
+@click.option("--product", required=True, help="id of product to search in")
 @click.argument("pattern")
 @click.pass_context
 def package(ctx, product, pattern):
     """Search for packages"""
+    #check if product is int, if not search for the int in cache file
+    try:
+        product=int(product)
+    except ValueError:
+        products = get_products(product, 'identifier', False, False)
+        if len(products) > 1:
+            print('Narrow down your product search, current selection gives:')
+            for prod in products:
+                print(' - {}'.format(prod['identifier']))
+            sys.exit(1)
+        product = products[0]['id']
     url = "{}?product_id={}&query={}".format(URL_PACKAGES, product, pattern)
     packages = fetch(url)
     table = PrettyTable()
@@ -136,7 +147,7 @@ def product(ctx, pattern, field, update_cache, no_cache, no_borders, no_header, 
     if short:
         table.border=False
         table.header=False
-        print(table.get_string(fields=['id', 'Identifier']))
+        print(table.get_string(fields=['Identifier']))
     else:
         print(table)
 
