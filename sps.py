@@ -21,10 +21,15 @@ def fetch(url):
     )
     curl.setopt(curl.WRITEDATA, buf)
     curl.setopt(curl.CAINFO, certifi.where())
-    curl.perform()
-    curl.close()
-    response = json.loads(buf.getvalue().decode("utf-8"))
-    return response["data"]
+    try:
+        curl.perform()
+        curl.close()
+        response = json.loads(buf.getvalue().decode("utf-8"))
+        return response["data"]
+    except pycurl.error as e:
+        sys.stderr.write('Err: {}\n'.format(e.args[1]))
+        sys.exit(e.args[0])
+
 
 
 def get_products(search, field):
