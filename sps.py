@@ -66,36 +66,6 @@ def get_products(search, field, update_cache, no_cache):
     return products
 
 
-def completion_bash():
-    comp = """
-_sps_complete()
-{
-	local cur_word prev_word type_list
-	cur_word="${COMP_WORDS[COMP_CWORD]}"
-	prev_word="${COMP_WORDS[COMP_CWORD-1]}"
-
-	if [[ "$prev_word" == "sps" ]];then
-		type_list="--help package product completion"
-	elif [[ "$prev_word" == "package" ]];then
-		type_list="--help --product"
-	elif [[ "$prev_word" == "product" ]];then
-		type_list="--help --field --update-cache --no--cache --no-borders --no-header --short"
-	elif [[ "$prev_word" == "completion" ]];then
-		type_list="--help bash"
-	fi
-
-	if [[ "${type_list}x" == "x" ]];then
-		COMPREPLY=()
-	else
-		COMPREPLY=( $(compgen -W "${type_list}" -- ${cur_word}) )
-	fi
-	return 0
-}
-complete -F _sps_complete sps
-"""
-    print(comp)
-
-
 @click.group()
 @click.pass_context
 def main(ctx):
@@ -169,16 +139,6 @@ def product(ctx, pattern, field, update_cache, no_cache, no_borders, no_header, 
         print(table.get_string(fields=['id', 'Identifier']))
     else:
         print(table)
-
-
-@main.command()
-@click.argument("shell", type=click.Choice(["bash"]))
-@click.pass_context
-def completion(ctx, shell):
-    """Completion for shells"""
-    if shell == "bash":
-        completion_bash()
-
 
 if __name__ == "__main__":
     main(obj={})
