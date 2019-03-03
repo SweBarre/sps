@@ -79,7 +79,7 @@ _sps_complete()
 	elif [[ "$prev_word" == "package" ]];then
 		type_list="--help --product"
 	elif [[ "$prev_word" == "product" ]];then
-		type_list="--help --field --update-cache --no-borders --no-header"
+		type_list="--help --field --update-cache --no-borders --no-header --short"
 	elif [[ "$prev_word" == "completion" ]];then
 		type_list="--help bash"
 	fi
@@ -141,8 +141,9 @@ def package(ctx, product, pattern):
 @click.option('--update-cache', is_flag=True, help='Update the local product cache')
 @click.option('--no-borders', is_flag=True, help="don't output borders")
 @click.option('--no-header', is_flag=True, help="don't output header")
+@click.option('--short', is_flag=True, help="no borders or header, only field id and identifier")
 @click.pass_context
-def product(ctx, pattern, field, update_cache, no_borders, no_header):
+def product(ctx, pattern, field, update_cache, no_borders, no_header, short):
     """Search for products"""
     products = get_products(pattern, field, update_cache)
     table = PrettyTable()
@@ -161,7 +162,12 @@ def product(ctx, pattern, field, update_cache, no_borders, no_header):
         )
     table.border = not no_borders
     table.header = not no_header
-    print(table)
+    if short:
+        table.border=False
+        table.header=False
+        print(table.get_string(fields=['id', 'Identifier']))
+    else:
+        print(table)
 
 
 @main.command()
