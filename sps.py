@@ -4,11 +4,16 @@ import certifi
 import pycurl
 import click
 import sys
+import os
+import pickle
 from prettytable import PrettyTable
 from io import BytesIO
+from pathlib import Path
 
 URL_PRODUCTS = "https://scc.suse.com/api/package_search/products"
 URL_PACKAGES = "https://scc.suse.com/api/package_search/packages"
+
+PRODUCT_CACHE_PATH = '{}/.cache/sps'.format(Path.home())
 
 
 def fetch(url):
@@ -27,13 +32,31 @@ def fetch(url):
         response = json.loads(buf.getvalue().decode("utf-8"))
         return response["data"]
     except pycurl.error as e:
-        sys.stderr.write('Err: {}\n'.format(e.args[1]))
+        sys.stderr.write('Error: {}\n'.format(e.args[1]))
         sys.exit(e.args[0])
 
 
 
-def get_products(search, field):
-    response = fetch(URL_PRODUCTS)
+def get_products(search, field, update_cache):
+    cache_file = "{}/products".format(PRODUCT_CACHE_PATH)
+
+    if update_cache or not os.path.isfile(cache_file):
+        response = fetch(URL_PRODUCTS)
+    else:
+        response = pickle.load(open(cache_file, 'rb' ))
+    if update_cache:
+        cache_path = Path(PRODUCT_CACHE_PATH)
+        if not cache_path.exists():
+            try:
+                os.mkdir(PRODUCT_CACHE_PATH)
+            except (FileExistsError, PermissionError) as e:
+                sys.exit('Error: {}'.format(e))
+        try:
+            pickle.dump(response, open(cache_file, 'wb'))
+        except PermissionError as e:
+            sys.exit('Error: {}'.format(e))
+
+
     products = []
     if search == "*":
         products = response
@@ -57,7 +80,7 @@ _sps_complete()
 	elif [[ "$prev_word" == "package" ]];then
 		type_list="--help --product"
 	elif [[ "$prev_word" == "product" ]];then
-		type_list="--help --field"
+		type_list="--help --field --update-cache"
 	elif [[ "$prev_word" == "completion" ]];then
 		type_list="--help bash"
 	fi
@@ -116,10 +139,11 @@ def package(ctx, product, pattern):
     default="identifier",
     type=click.Choice(["name", "identifier", "edition"]),
 )
+@click.option('--update-cache', is_flag=True, help='Update the local product cache')
 @click.pass_context
-def product(ctx, pattern, field):
+def product(ctx, pattern, field, update_cache):
     """Search for products"""
-    products = get_products(pattern, field)
+    products = get_products(pattern, field, update_cache)
     table = PrettyTable()
     table.field_names = ["id", "Name", "Edition", "Identifier", "Arch"]
     for name in table.field_names:
