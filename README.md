@@ -37,7 +37,7 @@ Inorder to search for a package you have to have the product ID to specify in wh
 To get the product ID you can do a product search.
 ```
 sps product --help
-Usage: sps product [OPTIONS] [PATTERN]
+Usage: sps.py product [OPTIONS] [PATTERN]
 
   Search for products
 
@@ -45,9 +45,19 @@ Options:
   --field [name|identifier|edition]
                                   Search PATTERN in this field,
                                   default=identifier
+  --update-cache                  Update the local product cache
+  --no-cache                      Don not use local product cache, fetch from
+                                  internet
+  --no-borders                    don't output borders
+  --no-header                     don't output header
+  --short                         no borders or header, only field id and
+                                  identifier
   --help                          Show this message and exit.
+
 ```
-the default fielt to search in is *identifier*, but that can be overridden by the *--field* option.
+The product list can be saved localy in **~/.cache/sps/products** by issue a `sps product --update-cache` and you can use the **--no-cache** to overide the localy stored products file.
+
+the default field to search in is *identifier*, but that can be overridden by the *--field* option.
 If no search PATTERN is given, all products will be returned
 Let's limit our package search to SLES 15 and x86_64 architecture
 ```
