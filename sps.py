@@ -36,10 +36,10 @@ def fetch(url):
         sys.exit(e.args[0])
 
 
-def get_products(search, field, update_cache):
+def get_products(search, field, update_cache, no_cache):
     cache_file = "{}/products".format(PRODUCT_CACHE_PATH)
 
-    if update_cache or not os.path.isfile(cache_file):
+    if update_cache or no_cache or not os.path.isfile(cache_file):
         response = fetch(URL_PRODUCTS)
     else:
         response = pickle.load(open(cache_file, 'rb' ))
@@ -79,7 +79,7 @@ _sps_complete()
 	elif [[ "$prev_word" == "package" ]];then
 		type_list="--help --product"
 	elif [[ "$prev_word" == "product" ]];then
-		type_list="--help --field --update-cache --no-borders --no-header --short"
+		type_list="--help --field --update-cache --no--cache --no-borders --no-header --short"
 	elif [[ "$prev_word" == "completion" ]];then
 		type_list="--help bash"
 	fi
@@ -139,13 +139,14 @@ def package(ctx, product, pattern):
     type=click.Choice(["name", "identifier", "edition"]),
 )
 @click.option('--update-cache', is_flag=True, help='Update the local product cache')
+@click.option('--no-cache', is_flag=True, help='Don not use local product cache, fetch from internet')
 @click.option('--no-borders', is_flag=True, help="don't output borders")
 @click.option('--no-header', is_flag=True, help="don't output header")
 @click.option('--short', is_flag=True, help="no borders or header, only field id and identifier")
 @click.pass_context
-def product(ctx, pattern, field, update_cache, no_borders, no_header, short):
+def product(ctx, pattern, field, update_cache, no_cache, no_borders, no_header, short):
     """Search for products"""
-    products = get_products(pattern, field, update_cache)
+    products = get_products(pattern, field, update_cache, no_cache)
     table = PrettyTable()
     table.field_names = ["id", "Name", "Edition", "Identifier", "Arch"]
     for name in table.field_names:
