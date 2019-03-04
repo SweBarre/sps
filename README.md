@@ -25,7 +25,7 @@ export PYCURL_SSL_LIBRARY=openssl
 pip install -r requirements.txt
 ```
 
-copy the sps shell-script to a location in your path (e.g. ~/bin or ~/.local/bin) and change the path to where you have the files and created the python virtual environment
+copy the sps shell-script to a location in your path (e.g. `~/bin` or `~/.local/bin`) and change the path to where you have the files and created the python virtual environment
 if you want the bash completion you can source the completion.sh in your **~/.bashrc**
 or add this to ~/.bashrc
 ```bash
