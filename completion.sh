@@ -1,6 +1,7 @@
 SPS_COMPLETE="\
     package\
     product\
+	completion\
     --help"
 
 SPS_PRODUCT_COMPLETE="\
@@ -26,6 +27,10 @@ if [[ -f ~/.cache/sps/products ]];then
 else
 	SPS_PACKAGE_PRODUCT_COMPLETE=""
 fi
+
+SPS_COMPLETION_COMLPETE="\
+	bash\
+	--help"
 
 _sps_complete()
 {
@@ -54,6 +59,9 @@ _sps_complete()
 					suggestions="$SPS_PACKAGE_COMPLETE"
 					;;
 			esac
+			;;
+		completion)
+			suggestions="$SPS_COMPLETION_COMLPETE"
 			;;
 		*)
 			suggestions="$SPS_COMPLETE"
