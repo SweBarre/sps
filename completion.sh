@@ -1,7 +1,7 @@
 SPS_COMPLETE="\
     package\
     product\
-	completion\
+    completion\
     --help"
 
 SPS_PRODUCT_COMPLETE="\
