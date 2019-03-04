@@ -6,7 +6,10 @@ import click
 import sys
 import os
 import pickle
+import datetime
+import atexit
 from prettytable import PrettyTable
+from colorama import Fore, Back, Style
 from io import BytesIO
 from pathlib import Path
 
@@ -14,6 +17,26 @@ URL_PRODUCTS = "https://scc.suse.com/api/package_search/products"
 URL_PACKAGES = "https://scc.suse.com/api/package_search/packages"
 
 PRODUCT_CACHE_PATH = "{}/.cache/sps".format(Path.home())
+# how many days should pass before warning on old cache file
+CACHE_WARNING_DAYS = 90
+
+
+def exit_checks():
+    """Thing that should be runing before exiting"""
+    today = datetime.datetime.today()
+    filedate = datetime.datetime.fromtimestamp(
+        os.path.getmtime("{}/products".format(PRODUCT_CACHE_PATH))
+    )
+    fileage = today - filedate
+    if fileage.days > CACHE_WARNING_DAYS:
+        print(
+            "{style}{color}WARNING: The products cahce for suse package search is {age} days old{reset}".format(
+                style=Style.BRIGHT,
+                color=Fore.YELLOW,
+                age=fileage.days,
+                reset=Style.RESET_ALL,
+            )
+        )
 
 
 def fetch(url):
@@ -68,7 +91,7 @@ def get_products(search, field, update_cache, no_cache):
 @click.group()
 @click.pass_context
 def main(ctx):
-    pass
+    atexit.register(exit_checks)
 
 
 @main.command()
