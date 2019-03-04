@@ -1,3 +1,28 @@
+SPS_COMPLETE="\
+    package\
+    product\
+    --help"
+
+SPS_PRODUCT_COMPLETE="\
+    --field\
+    --update-cache\
+    --no-cache\
+    --no-borders\
+    --no-header\
+    --short\
+    --help"
+
+SPS_PRODUCT_OPTION_FIELD_COMPLETE="\
+    name\
+    identifier\
+    edition"
+
+SPS_PACKAGE_COMPLETE="\
+    --product\
+    --help"
+
+SPS_PACKAGE_PRODUCT_COMPLETE="$(sps product --short | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g')"
+
 _sps_complete()
 {
 	local cur prev firstword suggestions
@@ -5,45 +30,26 @@ _sps_complete()
 	prev="${COMP_WORDS[COMP_CWORD-1]}"
 	firstword=$(_sps_get_firstword)
 
-
-	SPS_COMPLETE="\
-		package\
-		product\
-		--help"
-
-	PRODUCT_COMPLETE="\
-		--field\
-		--update-cache\
-		--no-cache\
-		--no-borders\
-		--no-header\
-		--short\
-		--help"
-
-	PRODUCT_OPTION_FIELD_COMPLETE="\
-		name\
-		identifier\
-		edition"
-
-	PACKAGE_COMPLETE="\
-		--product\
-		--help"
-
-	#echo -e "\nprev = $prev, cur = $cur, firstword = $firstword"
-
 	case "${firstword}" in
 		product)
 			case "${prev}" in
 				--field)
-					suggestions="$PRODUCT_OPTION_FIELD_COMPLETE"
+					suggestions="$SPS_PRODUCT_OPTION_FIELD_COMPLETE"
 					;;
 				*)
-					suggestions="$PRODUCT_COMPLETE"
+					suggestions="$SPS_PRODUCT_COMPLETE"
 					;;
 			esac
 			;;
 		package)
-			suggestions="$PACKAGE_COMPLETE"
+			case "${prev}" in
+				--product)
+					suggestions="$SPS_PACKAGE_PRODUCT_COMPLETE"
+					;;
+				*)
+					suggestions="$SPS_PACKAGE_COMPLETE"
+					;;
+			esac
 			;;
 		*)
 			suggestions="$SPS_COMPLETE"
