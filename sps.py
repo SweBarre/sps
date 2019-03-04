@@ -23,20 +23,20 @@ CACHE_WARNING_DAYS = 90
 
 def exit_checks():
     """Thing that should be runing before exiting"""
-    today = datetime.datetime.today()
-    filedate = datetime.datetime.fromtimestamp(
-        os.path.getmtime("{}/products".format(PRODUCT_CACHE_PATH))
-    )
-    fileage = today - filedate
-    if fileage.days > CACHE_WARNING_DAYS:
-        print(
-            "{style}{color}WARNING: The products cahce for suse package search is {age} days old{reset}".format(
-                style=Style.BRIGHT,
-                color=Fore.YELLOW,
-                age=fileage.days,
-                reset=Style.RESET_ALL,
+    fname = "{}/products".format(PRODUCT_CACHE_PATH)
+    if os.path.isfile(fname):
+        today = datetime.datetime.today()
+        filedate = datetime.datetime.fromtimestamp(os.path.getmtime(fname))
+        fileage = today - filedate
+        if fileage.days > CACHE_WARNING_DAYS:
+            print(
+                "{style}{color}WARNING: The products cahce for suse package search is {age} days old{reset}".format(
+                    style=Style.BRIGHT,
+                    color=Fore.YELLOW,
+                    age=fileage.days,
+                    reset=Style.RESET_ALL,
+                )
             )
-        )
 
 
 def fetch(url):
