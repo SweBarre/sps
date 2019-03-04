@@ -57,7 +57,30 @@ Options:
 
 ```
 The product list can be saved localy in **~/.cache/sps/products** by issue a `sps product --update-cache` and you can use the **--no-cache** to overide the localy stored products file.
+If you use the local product cache file there will be bash completion for the `package --product` filtering on the identifier column
+```
+sps package --product <TAB><TAB>
+CAASP/3.0/x86_64       SLES/12.2/ppc64le      SLES/12/s390x          SLES_SAP/12.2/ppc64le
+SLED/12.1/x86_64       SLES/12.2/s390x        SLES/12/x86_64         SLES_SAP/12.2/x86_64
+SLED/12.2/x86_64       SLES/12.2/x86_64       SLES/15.1/aarch64      SLES_SAP/12.3/ppc64le
+SLED/12.3/x86_64       SLES/12.3/aarch64      SLES/15.1/ppc64le      SLES_SAP/12.3/x86_64
+SLED/12.4/x86_64       SLES/12.3/ppc64le      SLES/15.1/s390x        SLES_SAP/12.4/ppc64le
+SLED/12/x86_64         SLES/12.3/s390x        SLES/15.1/x86_64       SLES_SAP/12.4/x86_64
+SLED/15.1/x86_64       SLES/12.3/x86_64       SLES/15/aarch64        SLES_SAP/12/x86_64
+SLED/15/x86_64         SLES/12.4/aarch64      SLES/15/ppc64le        SLES_SAP/15.1/ppc64le
+SLES/12.1/ppc64le      SLES/12.4/ppc64le      SLES/15/s390x          SLES_SAP/15.1/x86_64
+SLES/12.1/s390x        SLES/12.4/s390x        SLES/15/x86_64         SLES_SAP/15/ppc64le
+SLES/12.1/x86_64       SLES/12.4/x86_64       SLES_SAP/12.1/ppc64le  SLES_SAP/15/x86_64
+SLES/12.2/aarch64      SLES/12/ppc64le        SLES_SAP/12.1/x86_64
 
+sps package --product SLES/1 <TAB><TAB>
+SLES/12.1/ppc64le  SLES/12.2/x86_64   SLES/12.4/ppc64le  SLES/15.1/aarch64  SLES/15/s390x
+SLES/12.1/s390x    SLES/12.3/aarch64  SLES/12.4/s390x    SLES/15.1/ppc64le  SLES/15/x86_64
+SLES/12.1/x86_64   SLES/12.3/ppc64le  SLES/12.4/x86_64   SLES/15.1/s390x
+SLES/12.2/aarch64  SLES/12.3/s390x    SLES/12/ppc64le    SLES/15.1/x86_64
+SLES/12.2/ppc64le  SLES/12.3/x86_64   SLES/12/s390x      SLES/15/aarch64
+SLES/12.2/s390x    SLES/12.4/aarch64  SLES/12/x86_64     SLES/15/ppc64le
+```
 the default field to search in is *identifier*, but that can be overridden by the *--field* option.
 If no search PATTERN is given, all products will be returned
 Let's limit our package search to SLES 15 and x86_64 architecture

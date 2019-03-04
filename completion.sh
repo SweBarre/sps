@@ -21,7 +21,11 @@ SPS_PACKAGE_COMPLETE="\
     --product\
     --help"
 
-SPS_PACKAGE_PRODUCT_COMPLETE="$(sps product --short | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g')"
+if [[ -f ~/.cache/sps/products ]];then
+	SPS_PACKAGE_PRODUCT_COMPLETE="$(sps product --short | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g')"
+else
+	SPS_PACKAGE_PRODUCT_COMPLETE=""
+fi
 
 _sps_complete()
 {
