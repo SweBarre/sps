@@ -217,4 +217,5 @@ def completion(ctx, shell):
 
 
 if __name__ == "__main__":
+    sys.argv[0] = "sps"
     main(obj={})

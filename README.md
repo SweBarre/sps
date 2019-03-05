@@ -3,7 +3,7 @@ This little tool searches for packages in SUSE products, it's uses the open API'
 
 ```
 sps --help
-Usage: sps.py [OPTIONS] COMMAND [ARGS]...
+Usage: sps [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --help  Show this message and exit.
@@ -37,7 +37,7 @@ source <(sps completion bash)
 Inorder to search for a package you have to have the product ID to specify in what product you want to seach for the specific package.
 To get the product ID you can do a product search.
 ```
-Usage: sps.py product [OPTIONS] [PATTERN]
+Usage: sps product [OPTIONS] [PATTERN]
 
   Search for products
 
@@ -103,7 +103,7 @@ The id for that product is **1575**
 
 ## Searching for a package
 ```
-Usage: sps.py package [OPTIONS] PATTERN
+Usage: sps package [OPTIONS] PATTERN
 
   Search for packages
 
