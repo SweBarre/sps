@@ -96,9 +96,15 @@ def main(ctx):
 
 @main.command()
 @click.option("--product", required=True, help="id of product to search in")
+@click.option(
+    "--sort",
+    type=click.Choice(["Name", "Version", "Release", "Arch", "Module"]),
+    default=None,
+    help="Select the sorting field",
+)
 @click.argument("pattern")
 @click.pass_context
-def package(ctx, product, pattern):
+def package(ctx, product, sort, pattern):
     """Search for packages"""
     # check if product is int, if not search for the int in cache file
     try:
@@ -119,7 +125,7 @@ def package(ctx, product, pattern):
     url = "{}?product_id={}&query={}".format(URL_PACKAGES, product, pattern)
     packages = fetch(url)
     table = PrettyTable()
-    table.field_names = ["Name", "Version", "Release", "Arch", "Module(s)"]
+    table.field_names = ["Name", "Version", "Release", "Arch", "Module"]
     for name in table.field_names:
         table.align[name] = "l"
     for package in packages:
@@ -135,6 +141,9 @@ def package(ctx, product, pattern):
                 module_line[1:],
             ]
         )
+    if sort is not None:
+        table.sortby = sort
+
     print(table)
 
 
@@ -157,8 +166,16 @@ def package(ctx, product, pattern):
 @click.option(
     "--short", is_flag=True, help="no borders or header, only field id and identifier"
 )
+@click.option(
+    "--sort",
+    type=click.Choice(["id", "Name", "Edition", "Identifier", "Arch"]),
+    default=None,
+    help="Select the sorting field",
+)
 @click.pass_context
-def product(ctx, pattern, field, update_cache, no_cache, no_borders, no_header, short):
+def product(
+    ctx, pattern, field, update_cache, no_cache, no_borders, no_header, short, sort
+):
     """Search for products"""
     products = get_products(pattern, field, update_cache, no_cache)
     table = PrettyTable()
@@ -175,6 +192,8 @@ def product(ctx, pattern, field, update_cache, no_cache, no_borders, no_header, 
                 product["architecture"],
             ]
         )
+    if sort is not None:
+        table.sortby = sort
     table.border = not no_borders
     table.header = not no_header
     if short:

@@ -37,7 +37,6 @@ source <(sps completion bash)
 Inorder to search for a package you have to have the product ID to specify in what product you want to seach for the specific package.
 To get the product ID you can do a product search.
 ```
-sps product --help
 Usage: sps.py product [OPTIONS] [PATTERN]
 
   Search for products
@@ -53,8 +52,9 @@ Options:
   --no-header                     don't output header
   --short                         no borders or header, only field id and
                                   identifier
+  --sort [id|Name|Edition|Identifier|Arch]
+                                  Select sorting field
   --help                          Show this message and exit.
-
 ```
 The product list can be saved localy in **~/.cache/sps/products** by issue a `sps product --update-cache` and you can use the **--no-cache** to overide the localy stored products file.
 If you use the local product cache file there will be bash completion for the `package --product` filtering on the identifier column
@@ -103,14 +103,15 @@ The id for that product is **1575**
 
 ## Searching for a package
 ```
-sps package --help
-Usage: sps package [OPTIONS] PATTERN
+Usage: sps.py package [OPTIONS] PATTERN
 
   Search for packages
 
 Options:
-  --product INTEGER  id of product to search in  [required]
-  --help             Show this message and exit.
+  --product TEXT                  id of product to search in  [required]
+  --sort [Name|Version|Release|Arch|Module]
+                                  Select the sorting field
+  --help                          Show this message and exit.
 ```
 
 we need to specify the product id on where we want to search so if we do a search for all package containing the word *vim* and  do that for *SLES 15 x86_64* product, the syntax would be
