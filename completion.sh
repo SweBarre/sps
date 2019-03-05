@@ -11,7 +11,15 @@ SPS_PRODUCT_COMPLETE="\
     --no-borders\
     --no-header\
     --short\
+	--sort\
     --help"
+
+SPS_PRODUCT_SORT_COMPLETE="\
+	id\
+	Name\
+	Edition\
+	Identifier\
+	Arch"
 
 SPS_PRODUCT_OPTION_FIELD_COMPLETE="\
     name\
@@ -20,7 +28,15 @@ SPS_PRODUCT_OPTION_FIELD_COMPLETE="\
 
 SPS_PACKAGE_COMPLETE="\
     --product\
+	--sort\
     --help"
+
+SPS_PACKAGE_SORT_COMLETE="\
+	Name\
+	Version\
+	Release\
+	Arch\
+	Module"
 
 if [[ -f ~/.cache/sps/products ]];then
 	SPS_PACKAGE_PRODUCT_COMPLETE="$(sps product --short | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g')"
@@ -45,6 +61,9 @@ _sps_complete()
 				--field)
 					suggestions="$SPS_PRODUCT_OPTION_FIELD_COMPLETE"
 					;;
+				--sort)
+					suggestions="$SPS_PRODUCT_SORT_COMPLETE"
+					;;
 				*)
 					suggestions="$SPS_PRODUCT_COMPLETE"
 					;;
@@ -54,6 +73,9 @@ _sps_complete()
 			case "${prev}" in
 				--product)
 					suggestions="$SPS_PACKAGE_PRODUCT_COMPLETE"
+					;;
+				--sort)
+					suggestions="$SPS_PACKAGE_SORT_COMLETE"
 					;;
 				*)
 					suggestions="$SPS_PACKAGE_COMPLETE"
