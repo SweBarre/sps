@@ -114,9 +114,9 @@ Options:
   --help                          Show this message and exit.
 ```
 
-we need to specify the product id on where we want to search so if we do a search for all package containing the word *vim* and  do that for *SLES 15 x86_64* product, the syntax would be
+we need to specify the product id **or** the Identifier of the product where we want to search so if we do a search for all package containing the word *vim* and  do that for *SLES 15 x86_64* product, the syntax would be either `sps package --product 1575 vim` or `sps package --product SLES/15/x86_64 vim`
 ```
-sps package --product 1575 vim 
+sps package --product SLES/15/x86_64 vim
 +---------------------------+-------------------+-------------+--------+-----------------------------+
 | Name                      | Version           | Release     | Arch   | Module(s)                   |
 +---------------------------+-------------------+-------------+--------+-----------------------------+
