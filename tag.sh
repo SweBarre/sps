@@ -9,7 +9,7 @@ if [[ ! -z "$(git status --short)" ]]; then
 fi
 
 current_version="$(sed -n 's/.*__version__ = "\(.*\)".*/\1/p'  src/sps/__init__.py)"
-read -p "New version (currend :$current_version): " new_version
+read -p "New version (current :$current_version): " new_version
 
 git add -f "dist/sps-${current_version}-py36-none-any.whl"
 git commit -m "Added wheel file for $current_version"
