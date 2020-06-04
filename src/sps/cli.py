@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from argparse import ArgumentParser
 from prettytable import PrettyTable
-from sps import products, packages, completion
+from sps import products, packages, completion, __version__
 
 
 def create_parser(args=sys.argv[1:]):
@@ -20,6 +20,9 @@ def create_parser(args=sys.argv[1:]):
         "-C",
         help=f"cache file to use, (default: { str(Path.home()) }/.cache/sps_products.json",
         default=f"{ str(Path.home()) }/.cache/sps_products.json",
+    )
+    parser.add_argument(
+        "--version", "-V", action="version", version=f"%(prog)s {__version__}"
     )
     if not args:
         parser.add_argument(
