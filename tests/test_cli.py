@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 from prettytable import PrettyTable
 import prettytable
 from pathlib import Path
-from sps import cli, products, packages, completion
+from sps import cli, products, packages, completion, __version__
 
 
 @pytest.fixture
@@ -62,6 +62,18 @@ def test_parser_with_known_commands(parser):
     args = parser.parse_args(["product", "pattern"])
     assert args.command == "product"
     assert args.pattern == "pattern"
+
+
+def test_parser_with_version_option(parser, capsys):
+    with pytest.raises(SystemExit):
+        parser.parse_args("--version".split())
+    captured = capsys.readouterr()
+    assert captured.out.strip() == f"pytest {__version__}"
+
+    with pytest.raises(SystemExit):
+        parser.parse_args("-V".split())
+    captured = capsys.readouterr()
+    assert captured.out.strip() == f"pytest {__version__}"
 
 
 def test_parser_with_options_before_paramteter():
