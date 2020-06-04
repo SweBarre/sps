@@ -16,8 +16,8 @@ Usage
 
 ::
 
-    sps --help
-    usage: sps [-h] [--cache-file CACHE_FILE]
+    $ sps --help
+    usage: sps [-h] [--cache-file CACHE_FILE] [--version]
                {package,product,completion} [pattern]
 
     positional arguments:
@@ -29,7 +29,8 @@ Usage
       -h, --help            show this help message and exit
       --cache-file CACHE_FILE, -C CACHE_FILE
                             cache file to use, (default:
-                            /home/<username>/.cache/sps_products.json
+                            /home/jonas/.cache/sps_products.json
+      --version, -V         show program's version number and exit
 
 
 List all products available
