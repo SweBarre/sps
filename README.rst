@@ -77,7 +77,7 @@ To get bash completion you can run ``sps completion bash`` and redirect it to a 
 
 If your have a local product cache you will get tab-completion for the product in package search
 
-::
+    code-block::
     $ sps package <TAB> <TAB>
     CAASP/3.0/x86_64                 SLES/12.2/aarch64                SLES/15/aarch64
     --help                           SLES/12.2/ppc64le                SLES/15/ppc64le
@@ -124,7 +124,7 @@ Running Tests
 
 Run tests locally using ``make`` if virtualenv is active:
 
-::
+    code-block::
 
     $ make test
 
