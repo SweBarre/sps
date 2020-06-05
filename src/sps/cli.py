@@ -49,7 +49,7 @@ def create_parser(args=sys.argv[1:]):
                 action="store_true",
             )
             parser.add_argument(
-                "--short", "-s", help="Don't use the local cache", action="store_true",
+                "--short", "-s", help="Just print product identifier", action="store_true",
             )
         if args[0] == "package":
             parser.add_argument("command", help="package related tasks")

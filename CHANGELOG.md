@@ -12,6 +12,7 @@ All notable changes will be documented in this file.
 - description of sps in README.rst
 - typo i README.rst
 - typos in cli help texts
+- help text for package --short/-s option
 
 ## [0.1.0] - 2020-06-04
 ### Changed

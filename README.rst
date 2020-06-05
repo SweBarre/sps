@@ -56,7 +56,7 @@ Product search
       --version, -V         show program's version number and exit
       --update-cache, -u    Update the local product cache
       --no-cache, -N        Don't use the local cache
-      --short, -s           Don't use the local cache
+      --short, -s           Just print product identifier
 List all products available
 
 ::
