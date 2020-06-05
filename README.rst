@@ -33,6 +33,16 @@ Usage
                             /home/jonas/.cache/sps_products.json
       --version, -V         show program's version number and exit
 
+Shell completion
+---------------
+
+To get bash completion you can run ``sps completion bash`` and redirect it to a file that you source from your .bashrc or just run the following
+
+::
+
+    $ source <(sps completion bash)
+
+
 
 Product search
 -------------
@@ -131,38 +141,11 @@ To search for packages just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATT
     +------+----------+---------+--------+-----------------------------+
 
 
-To get bash completion you can run ``sps completion bash`` and redirect it to a file that you source from your .bashrc or just run the following
-
-::
-
-    $ source <(sps completion bash)
-
-
-Search packages
----------------
-
-::
-
-    sps package --help
-    usage: sps [-h] [--cache-file CACHE_FILE] [--version] [--exact-match]
-               command product [pattern]
-    
-    positional arguments:
-      command               package raleated tasks
-      product               product id or identifier to search for packages in
-      pattern               pattern to search for
-    
-    optional arguments:
-      -h, --help            show this help message and exit
-      --cache-file CACHE_FILE, -C CACHE_FILE
-                            cache file to use, (default:
-                            /home/jonas/.cache/sps_products.json
-      --version, -V         show program's version number and exit
-      --exact-match, -e     Only show where PATTERN matches exact
 
 If your have a local product cache you will get tab-completion for the product in package search
 
 ::
+
 
     $ sps package <TAB> <TAB>
     CAASP/3.0/x86_64                 SLES/12.2/aarch64                SLES/15/aarch64
