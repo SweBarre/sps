@@ -81,6 +81,29 @@ To get bash completion you can run ``sps completion bash`` and redirect it to a 
 
     $ source <(sps completion bash)
 
+
+Search packages
+---------------
+
+::
+
+    sps package --help
+    usage: sps [-h] [--cache-file CACHE_FILE] [--version] [--exact-match]
+               command product [pattern]
+    
+    positional arguments:
+      command               package raleated tasks
+      product               product id or identifier to search for packages in
+      pattern               pattern to search for
+    
+    optional arguments:
+      -h, --help            show this help message and exit
+      --cache-file CACHE_FILE, -C CACHE_FILE
+                            cache file to use, (default:
+                            /home/jonas/.cache/sps_products.json
+      --version, -V         show program's version number and exit
+      --exact-match, -e     Only show where PATTERN matches exact
+
 If your have a local product cache you will get tab-completion for the product in package search
 
 ::

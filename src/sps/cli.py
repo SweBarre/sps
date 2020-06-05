@@ -57,7 +57,12 @@ def create_parser(args=sys.argv[1:]):
                 "product", help="product id or identifier to search for packages in"
             )
             parser.add_argument("pattern", nargs="?", help="pattern to search for")
-
+            parser.add_argument(
+                "--exact-match",
+                "-e",
+                help="Only show where PATTERN matches exact",
+                action="store_true",
+            )
         if args[0] == "completion":
             parser.add_argument("command", help="tab completion raleated tasks")
             parser.add_argument(
@@ -109,15 +114,26 @@ def main():
             module_line = ""
             for product in package["products"]:
                 module_line = "{},{}".format(module_line, product["name"])
-            table.add_row(
-                [
-                    package["name"],
-                    package["version"],
-                    package["release"],
-                    package["arch"],
-                    module_line[1:],
-                ]
-            )
+            if args.exact_match and package["name"] == args.pattern:
+                table.add_row(
+                    [
+                        package["name"],
+                        package["version"],
+                        package["release"],
+                        package["arch"],
+                        module_line[1:],
+                    ]
+                )
+            elif not args.exact_match:
+                table.add_row(
+                    [
+                        package["name"],
+                        package["version"],
+                        package["release"],
+                        package["arch"],
+                        module_line[1:],
+                    ]
+                )
         print(table)
     if args.command == "completion":
         print(completion.get(args.cache_file, args.shell))
