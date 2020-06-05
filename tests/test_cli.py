@@ -165,6 +165,15 @@ def test_parser_package_command_product_id(parser_package):
         args = parser_package.parse_args("package".split())
 
 
+def test_parser_package_command_exact_match(parser_package):
+    args = parser_package.parse_args("package testing".split())
+    assert args.exact_match == False
+    args = parser_package.parse_args("package testing --exact-match".split())
+    assert args.exact_match == True
+    args = parser_package.parse_args("package testing -e".split())
+    assert args.exact_match == True
+
+
 def test_parser_completion(parser_completion):
     args = parser_completion.parse_args("completion".split())
     assert args.command == "completion"
@@ -260,14 +269,33 @@ def test_main_package_output(mocker, capsys):
         def parse_args(self):
             return Namespace(
                 command="package",
-                pattern=None,
+                pattern="gvim",
                 cache_file="fake-file-name",
                 update_cache=False,
                 product="1935",
+                exact_match=False,
             )
 
     data = {
         "data": [
+            {
+                "id": 19399264,
+                "name": "gvim",
+                "arch": "x86_64",
+                "version": "8.0.1568",
+                "release": "5.3.1",
+                "products": [
+                    {
+                        "id": 1967,
+                        "name": "Desktop Applications Module",
+                        "identifier": "sle-module-desktop-applications/15.2/x86_64",
+                        "type": "module",
+                        "free": True,
+                        "edition": "15 SP2",
+                        "architecture": "x86_64",
+                    }
+                ],
+            },
             {
                 "id": 19731289,
                 "name": "gvim-debuginfo",
@@ -285,7 +313,7 @@ def test_main_package_output(mocker, capsys):
                         "architecture": "x86_64",
                     }
                 ],
-            }
+            },
         ]
     }
 
@@ -297,8 +325,79 @@ def test_main_package_output(mocker, capsys):
     output = """+----------------+----------+---------+--------+-----------------------------+
 | Name           | Version  | Release | Arch   | Module                      |
 +----------------+----------+---------+--------+-----------------------------+
+| gvim           | 8.0.1568 | 5.3.1   | x86_64 | Desktop Applications Module |
 | gvim-debuginfo | 8.0.1568 | 5.3.1   | x86_64 | Desktop Applications Module |
 +----------------+----------+---------+--------+-----------------------------+
+"""
+
+    cli.main()
+    captured = capsys.readouterr()
+    assert captured.out == output
+
+
+def test_main_package_output_exact_match(mocker, capsys):
+    class parser_proxy:
+        def parse_args(self):
+            return Namespace(
+                command="package",
+                pattern="gvim",
+                cache_file="fake-file-name",
+                update_cache=False,
+                product="1935",
+                exact_match=True,
+            )
+
+    data = {
+        "data": [
+            {
+                "id": 19399264,
+                "name": "gvim",
+                "arch": "x86_64",
+                "version": "8.0.1568",
+                "release": "5.3.1",
+                "products": [
+                    {
+                        "id": 1967,
+                        "name": "Desktop Applications Module",
+                        "identifier": "sle-module-desktop-applications/15.2/x86_64",
+                        "type": "module",
+                        "free": True,
+                        "edition": "15 SP2",
+                        "architecture": "x86_64",
+                    }
+                ],
+            },
+            {
+                "id": 19731289,
+                "name": "gvim-debuginfo",
+                "arch": "x86_64",
+                "version": "8.0.1568",
+                "release": "5.3.1",
+                "products": [
+                    {
+                        "id": 1967,
+                        "name": "Desktop Applications Module",
+                        "identifier": "sle-module-desktop-applications/15.2/x86_64",
+                        "type": "module",
+                        "free": True,
+                        "edition": "15 SP2",
+                        "architecture": "x86_64",
+                    }
+                ],
+            },
+        ]
+    }
+
+    mocker.patch("sps.packages.get", autospec=True)
+    packages.get.return_value = data
+    mocker.patch("sps.cli.create_parser", autospec=True)
+    cli.create_parser.return_value = parser_proxy()
+
+    output = """+------+----------+---------+--------+-----------------------------+
+| Name | Version  | Release | Arch   | Module                      |
++------+----------+---------+--------+-----------------------------+
+| gvim | 8.0.1568 | 5.3.1   | x86_64 | Desktop Applications Module |
++------+----------+---------+--------+-----------------------------+
 """
 
     cli.main()
