@@ -66,6 +66,10 @@ def create_parser(args=sys.argv[1:]):
                 help="Only show where PATTERN matches exact",
                 action="store_true",
             )
+        if args[0] in ["product", "package"]:
+            parser.add_argument(
+                "--no-borders", "-n", help="Don not print borders", action="store_true"
+            )
         if args[0] == "completion":
             parser.add_argument("command", help="tab completion raleated tasks")
             parser.add_argument(
@@ -82,61 +86,61 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    if args.command == "product":
+    if args.command in ["product", "package"]:
         table = PrettyTable()
-        product_data = products.get(
-            args.pattern, args.cache_file, args.no_cache, args.update_cache
-        )
-        table.field_names = ["id", "Name", "Edition", "Identifier", "Arch"]
-        for name in table.field_names:
-            table.align[name] = "l"
-        for product in product_data["data"]:
-            table.add_row(
-                [
-                    product["id"],
-                    product["name"],
-                    product["edition"],
-                    product["identifier"],
-                    product["architecture"],
-                ]
+        if args.command == "product":
+            product_data = products.get(
+                args.pattern, args.cache_file, args.no_cache, args.update_cache
             )
-        if args.short:
-            table.border = False
-            table.header = False
-            print(table.get_string(fields=["Identifier"]))
-        else:
-            print(table)
+            table.field_names = ["id", "Name", "Edition", "Identifier", "Arch"]
+            for name in table.field_names:
+                table.align[name] = "l"
+            for product in product_data["data"]:
+                table.add_row(
+                    [
+                        product["id"],
+                        product["name"],
+                        product["edition"],
+                        product["identifier"],
+                        product["architecture"],
+                    ]
+                )
+            if args.short:
+                table.border = False
+                table.header = False
+                print(table.get_string(fields=["Identifier"]))
+                return
 
-    if args.command == "package":
-        table = PrettyTable()
-        package_data = packages.get(args.product, args.pattern, args.cache_file)
-        table.field_names = ["Name", "Version", "Release", "Arch", "Module"]
-        for name in table.field_names:
-            table.align[name] = "l"
-        for package in package_data["data"]:
-            module_line = ""
-            for product in package["products"]:
-                module_line = "{},{}".format(module_line, product["name"])
-            if args.exact_match and package["name"] == args.pattern:
-                table.add_row(
-                    [
-                        package["name"],
-                        package["version"],
-                        package["release"],
-                        package["arch"],
-                        module_line[1:],
-                    ]
-                )
-            elif not args.exact_match:
-                table.add_row(
-                    [
-                        package["name"],
-                        package["version"],
-                        package["release"],
-                        package["arch"],
-                        module_line[1:],
-                    ]
-                )
+        if args.command == "package":
+            package_data = packages.get(args.product, args.pattern, args.cache_file)
+            table.field_names = ["Name", "Version", "Release", "Arch", "Module"]
+            for name in table.field_names:
+                table.align[name] = "l"
+            for package in package_data["data"]:
+                module_line = ""
+                for product in package["products"]:
+                    module_line = "{},{}".format(module_line, product["name"])
+                if args.exact_match and package["name"] == args.pattern:
+                    table.add_row(
+                        [
+                            package["name"],
+                            package["version"],
+                            package["release"],
+                            package["arch"],
+                            module_line[1:],
+                        ]
+                    )
+                elif not args.exact_match:
+                    table.add_row(
+                        [
+                            package["name"],
+                            package["version"],
+                            package["release"],
+                            package["arch"],
+                            module_line[1:],
+                        ]
+                    )
+        table.border = not args.no_borders
         print(table)
     if args.command == "completion":
         print(completion.get(args.cache_file, args.shell))
