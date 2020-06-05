@@ -41,7 +41,7 @@ List all products available
     $ sps product
 
 
-To ave a local product cache in ``~/.cache/sps/products`` just run the following command
+To save a local product cache in ``~/.cache/sps/products`` just run the following command
 
 ::
 
