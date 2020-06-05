@@ -8,8 +8,10 @@ All notable changes will be documented in this file.
 - --version/-V option
 
 ### Changed
+- Product/Package headings in README.rst
 - description of sps in README.rst
 - typo i README.rst
+- typos in cli help texts
 
 ## [0.1.0] - 2020-06-04
 ### Changed

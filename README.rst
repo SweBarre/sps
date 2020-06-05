@@ -34,6 +34,29 @@ Usage
       --version, -V         show program's version number and exit
 
 
+Product search
+-------------
+
+::
+
+    sps product --help
+    usage: sps [-h] [--cache-file CACHE_FILE] [--version] [--update-cache]
+               [--no-cache] [--short]
+               command [pattern]
+
+    positional arguments:
+      command               product related tasks
+      pattern               pattern to search for
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --cache-file CACHE_FILE, -C CACHE_FILE
+                            cache file to use, (default:
+                            /home/jonas/.cache/sps_products.json
+      --version, -V         show program's version number and exit
+      --update-cache, -u    Update the local product cache
+      --no-cache, -N        Don't use the local cache
+      --short, -s           Don't use the local cache
 List all products available
 
 ::
@@ -52,6 +75,29 @@ List products that matches a SLES15
 ::
 
     $ sps product SLES15
+
+
+Package search
+--------------
+
+::
+
+    $ sps package --help
+    usage: sps [-h] [--cache-file CACHE_FILE] [--version] [--exact-match]
+               command product [pattern]
+
+    positional arguments:
+      command               package related tasks
+      product               product id or identifier to search for packages in
+      pattern               pattern to search for
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --cache-file CACHE_FILE, -C CACHE_FILE
+                            cache file to use, (default:
+                            /home/jonas/.cache/sps_products.json
+      --version, -V         show program's version number and exit
+      --exact-match, -e     Only show where PATTERN matches exact
 
 
 To search for packages just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATTERN>``
