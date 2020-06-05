@@ -76,6 +76,15 @@ To search for packages just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATT
     | gvim-debuginfo | 8.0.1568 | 3.20    | x86_64 | Desktop Applications Module |
     +----------------+----------+---------+--------+-----------------------------+
 
+    $ sps package SLES/15.1/x86_64 gvim --exact-match
+    +------+----------+---------+--------+-----------------------------+
+    | Name | Version  | Release | Arch   | Module                      |
+    +------+----------+---------+--------+-----------------------------+
+    | gvim | 8.0.1568 | 5.3.1   | x86_64 | Desktop Applications Module |
+    | gvim | 8.0.1568 | 3.20    | x86_64 | Desktop Applications Module |
+    +------+----------+---------+--------+-----------------------------+
+
+
 To get bash completion you can run ``sps completion bash`` and redirect it to a file that you source from your .bashrc or just run the following
 
 ::
