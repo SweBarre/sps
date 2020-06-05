@@ -2,6 +2,7 @@ sps
 ========
 
 CLI searching for packages in SUSE products.
+It is a cli interface to the SUSE Customer Center search packages API https://scc.suse.com/packages
 
 Installing
 ----------
@@ -53,7 +54,7 @@ List products that matches a SLES15
     $ sps product SLES15
 
 
-To search for packes just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATTERN>``
+To search for packages just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATTERN>``
 
 ::
 
