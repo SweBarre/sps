@@ -34,7 +34,7 @@ def create_parser(args=sys.argv[1:]):
 
     if args:
         if args[0] == "product":
-            parser.add_argument("command", help="product raleated tasks")
+            parser.add_argument("command", help="product related tasks")
             parser.add_argument("pattern", nargs="?", help="pattern to search for")
             parser.add_argument(
                 "--update-cache",
@@ -52,7 +52,7 @@ def create_parser(args=sys.argv[1:]):
                 "--short", "-s", help="Don't use the local cache", action="store_true",
             )
         if args[0] == "package":
-            parser.add_argument("command", help="package raleated tasks")
+            parser.add_argument("command", help="package related tasks")
             parser.add_argument(
                 "product", help="product id or identifier to search for packages in"
             )
