@@ -49,9 +49,11 @@ Product search
 
 ::
 
-    sps product --help
+    $ sps product --help
     usage: sps [-h] [--cache-file CACHE_FILE] [--version] [--update-cache]
                [--no-cache] [--short]
+               [--sort-table {id,Name,Edition,Identifier,Arch}] [--no-borders]
+               [--no-header]
                command [pattern]
 
     positional arguments:
@@ -67,7 +69,13 @@ Product search
       --update-cache, -u    Update the local product cache
       --no-cache, -N        Don't use the local cache
       --short, -s           Just print product identifier
-List all products available
+      --sort-table {id,Name,Edition,Identifier,Arch}, -S {id,Name,Edition,Identifier,Arch}
+                            Sort output by column
+      --no-borders, -n      Do not print borders
+      --no-header, -H       Do not print headers
+
+
+List all products
 
 ::
 
@@ -94,6 +102,8 @@ Package search
 
     $ sps package --help
     usage: sps [-h] [--cache-file CACHE_FILE] [--version] [--exact-match]
+               [--sort-table {Name,Version,Release,Arch,Module}] [--no-borders]
+               [--no-header]
                command product [pattern]
 
     positional arguments:
@@ -108,6 +118,10 @@ Package search
                             /home/jonas/.cache/sps_products.json
       --version, -V         show program's version number and exit
       --exact-match, -e     Only show where PATTERN matches exact
+      --sort-table {Name,Version,Release,Arch,Module}, -S {Name,Version,Release,Arch,Module}
+                            Sort output by column
+      --no-borders, -n      Do not print borders
+      --no-header, -H       Do not print headers
 
 
 To search for packages just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATTERN>``
@@ -122,7 +136,7 @@ To search for packages just run ``sps package <PRODUCT NAME or PRODUCT ID> <PATT
     | gvim           | 8.0.1568 | 3.20    | x86_64 | Desktop Applications Module |
     | gvim-debuginfo | 8.0.1568 | 3.20    | x86_64 | Desktop Applications Module |
     +----------------+----------+---------+--------+-----------------------------+
-    
+
     $ sps package 1763 gvim
     +----------------+----------+---------+--------+-----------------------------+
     | Name           | Version  | Release | Arch   | Module                      |
