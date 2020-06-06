@@ -150,6 +150,70 @@ def test_parser_product_short(parser_product):
     assert args.short == True
 
 
+def test_parser_product_no_border(parser_product):
+    args = parser_product.parse_args("product".split())
+    assert args.no_borders == False
+    args = parser_product.parse_args("product --no-borders".split())
+    assert args.no_borders == True
+    args = parser_product.parse_args("product -n".split())
+    assert args.no_borders == True
+
+
+def test_parser_product_sort_table(parser_product):
+    args = parser_product.parse_args(["product"])
+    assert args.sort_table == "id"
+    for tn in ["id", "Name", "Edition", "Identifier", "Arch"]:
+        args = parser_product.parse_args(f"product --sort-table {tn}".split())
+        assert args.sort_table == tn
+        args = parser_product.parse_args(f"product -S {tn}".split())
+        assert args.sort_table == tn
+    with pytest.raises(SystemExit):
+        args = parser_product.parse_args(
+            f"product --sort-table fake-column-name".split()
+        )
+
+
+def test_parser_product_no_header(parser_product):
+    args = parser_product.parse_args("product".split())
+    assert args.no_header == False
+    args = parser_product.parse_args("product --no-header".split())
+    assert args.no_header == True
+    args = parser_product.parse_args("product -H".split())
+    assert args.no_header == True
+
+
+def test_parser_package_sort_table(parser_package):
+    args = parser_package.parse_args("package fake".split())
+    assert args.sort_table == "Name"
+    for tn in ["Name", "Version", "Release", "Arch", "Module"]:
+        args = parser_package.parse_args(f"package fake --sort-table {tn}".split())
+        assert args.sort_table == tn
+        args = parser_package.parse_args(f"package fake -S {tn}".split())
+        assert args.sort_table == tn
+    with pytest.raises(SystemExit):
+        args = parser_package.parse_args(
+            f"package fake --sort-table fake-column-name".split()
+        )
+
+
+def test_parser_package_no_border(parser_package):
+    args = parser_package.parse_args("package test".split())
+    assert args.no_borders == False
+    args = parser_package.parse_args("package test --no-borders".split())
+    assert args.no_borders == True
+    args = parser_package.parse_args("package test -n".split())
+    assert args.no_borders == True
+
+
+def test_parser_package_no_header(parser_package):
+    args = parser_package.parse_args("package test".split())
+    assert args.no_header == False
+    args = parser_package.parse_args("package test --no-header".split())
+    assert args.no_header == True
+    args = parser_package.parse_args("package test -H".split())
+    assert args.no_header == True
+
+
 def test_parser_package_command_product_id(parser_package):
     """
     parser with package command --product
@@ -193,6 +257,9 @@ def test_main_product_output(mocker, capsys):
                 update_cache=False,
                 no_cache=False,
                 short=False,
+                no_borders=False,
+                no_header=False,
+                sort_table="id",
             )
 
     data = {
@@ -236,6 +303,9 @@ def test_main_product_output_short(mocker, capsys):
                 update_cache=False,
                 no_cache=False,
                 short=True,
+                no_borders=False,
+                no_header=False,
+                sort_table="id",
             )
 
     data = {
@@ -274,6 +344,9 @@ def test_main_package_output(mocker, capsys):
                 update_cache=False,
                 product="1935",
                 exact_match=False,
+                no_borders=False,
+                no_header=False,
+                sort_table="Name",
             )
 
     data = {
@@ -345,6 +418,9 @@ def test_main_package_output_exact_match(mocker, capsys):
                 update_cache=False,
                 product="1935",
                 exact_match=True,
+                no_borders=False,
+                no_header=False,
+                sort_table="Name",
             )
 
     data = {

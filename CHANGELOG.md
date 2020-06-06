@@ -3,7 +3,10 @@ All notable changes will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- --sort-table/-S option to product/package output
+- --no-header/-H option to product/package output
 - CHANGELOG.md
+- --no-borders/-n option to product/package output
 - --exact-match/-e option to product search
 - --version/-V option
 
