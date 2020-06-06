@@ -2,12 +2,25 @@ SPS_COMPLETE="\
     package\
     product\
     completion\
-    --help"
+    --help\
+    --version"
 
 SPS_PRODUCT_COMPLETE="\
     --update-cache\
     --no-cache\
-    --help"
+    --help\
+    --version\
+    --short\
+    --sort-table\
+    --no-borders\
+    --no-header"
+
+SPS_PRODUCT_SORT_TABLE_COMPLETE="\
+    id\
+    Name\
+    Edition\
+    Identifier\
+    Arch"
 
 
 if [[ -f {sps_cachefile} ]];then
@@ -33,6 +46,12 @@ _sps_complete()
     case "${firstword}" in
         product)
             case "${prev}" in
+                product)
+                    suggestions=""
+                    ;;
+                --sort-table)
+                    suggestions="$SPS_PRODUCT_SORT_TABLE_COMPLETE"
+                    ;;
                 *)
                     suggestions="$SPS_PRODUCT_COMPLETE"
                     ;;
