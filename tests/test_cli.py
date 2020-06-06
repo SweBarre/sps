@@ -71,7 +71,7 @@ def test_parser_with_version_option(parser, capsys):
     assert captured.out.strip() == f"pytest {__version__}"
 
     with pytest.raises(SystemExit):
-        parser.parse_args("-V".split())
+        parser.parse_args("-v".split())
     captured = capsys.readouterr()
     assert captured.out.strip() == f"pytest {__version__}"
 
