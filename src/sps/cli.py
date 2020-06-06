@@ -54,6 +54,13 @@ def create_parser(args=sys.argv[1:]):
                 help="Just print product identifier",
                 action="store_true",
             )
+            parser.add_argument(
+                "--sort-table",
+                "-S",
+                help="Sort output by column",
+                choices=["id", "Name", "Edition", "Identifier", "Arch"],
+                default="id",
+            )
         if args[0] == "package":
             parser.add_argument("command", help="package related tasks")
             parser.add_argument(
@@ -65,6 +72,13 @@ def create_parser(args=sys.argv[1:]):
                 "-e",
                 help="Only show where PATTERN matches exact",
                 action="store_true",
+            )
+            parser.add_argument(
+                "--sort-table",
+                "-S",
+                help="Sort output by column",
+                choices=["Name", "Version", "Release", "Arch", "Module"],
+                default="Name",
             )
         if args[0] in ["product", "package"]:
             parser.add_argument(
@@ -145,6 +159,7 @@ def main():
                     )
         table.border = not args.no_borders
         table.header = not args.no_header
+        table.sortby = args.sort_table
         print(table)
     if args.command == "completion":
         print(completion.get(args.cache_file, args.shell))

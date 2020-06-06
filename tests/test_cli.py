@@ -159,6 +159,20 @@ def test_parser_product_no_border(parser_product):
     assert args.no_borders == True
 
 
+def test_parser_product_sort_table(parser_product):
+    args = parser_product.parse_args(["product"])
+    assert args.sort_table == "id"
+    for tn in ["id", "Name", "Edition", "Identifier", "Arch"]:
+        args = parser_product.parse_args(f"product --sort-table {tn}".split())
+        assert args.sort_table == tn
+        args = parser_product.parse_args(f"product -S {tn}".split())
+        assert args.sort_table == tn
+    with pytest.raises(SystemExit):
+        args = parser_product.parse_args(
+            f"product --sort-table fake-column-name".split()
+        )
+
+
 def test_parser_product_no_header(parser_product):
     args = parser_product.parse_args("product".split())
     assert args.no_header == False
@@ -166,6 +180,20 @@ def test_parser_product_no_header(parser_product):
     assert args.no_header == True
     args = parser_product.parse_args("product -H".split())
     assert args.no_header == True
+
+
+def test_parser_package_sort_table(parser_package):
+    args = parser_package.parse_args("package fake".split())
+    assert args.sort_table == "Name"
+    for tn in ["Name", "Version", "Release", "Arch", "Module"]:
+        args = parser_package.parse_args(f"package fake --sort-table {tn}".split())
+        assert args.sort_table == tn
+        args = parser_package.parse_args(f"package fake -S {tn}".split())
+        assert args.sort_table == tn
+    with pytest.raises(SystemExit):
+        args = parser_package.parse_args(
+            f"package fake --sort-table fake-column-name".split()
+        )
 
 
 def test_parser_package_no_border(parser_package):
@@ -231,6 +259,7 @@ def test_main_product_output(mocker, capsys):
                 short=False,
                 no_borders=False,
                 no_header=False,
+                sort_table="id",
             )
 
     data = {
@@ -276,6 +305,7 @@ def test_main_product_output_short(mocker, capsys):
                 short=True,
                 no_borders=False,
                 no_header=False,
+                sort_table="id",
             )
 
     data = {
@@ -316,6 +346,7 @@ def test_main_package_output(mocker, capsys):
                 exact_match=False,
                 no_borders=False,
                 no_header=False,
+                sort_table="Name",
             )
 
     data = {
@@ -389,6 +420,7 @@ def test_main_package_output_exact_match(mocker, capsys):
                 exact_match=True,
                 no_borders=False,
                 no_header=False,
+                sort_table="Name",
             )
 
     data = {
