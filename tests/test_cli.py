@@ -153,19 +153,37 @@ def test_parser_product_short(parser_product):
 def test_parser_product_no_border(parser_product):
     args = parser_product.parse_args("product".split())
     assert args.no_borders == False
-    args = parser_product.parse_args("product --no-border".split())
+    args = parser_product.parse_args("product --no-borders".split())
     assert args.no_borders == True
     args = parser_product.parse_args("product -n".split())
     assert args.no_borders == True
 
 
+def test_parser_product_no_header(parser_product):
+    args = parser_product.parse_args("product".split())
+    assert args.no_header == False
+    args = parser_product.parse_args("product --no-header".split())
+    assert args.no_header == True
+    args = parser_product.parse_args("product -H".split())
+    assert args.no_header == True
+
+
 def test_parser_package_no_border(parser_package):
     args = parser_package.parse_args("package test".split())
     assert args.no_borders == False
-    args = parser_package.parse_args("package test --no-border".split())
+    args = parser_package.parse_args("package test --no-borders".split())
     assert args.no_borders == True
     args = parser_package.parse_args("package test -n".split())
     assert args.no_borders == True
+
+
+def test_parser_package_no_header(parser_package):
+    args = parser_package.parse_args("package test".split())
+    assert args.no_header == False
+    args = parser_package.parse_args("package test --no-header".split())
+    assert args.no_header == True
+    args = parser_package.parse_args("package test -H".split())
+    assert args.no_header == True
 
 
 def test_parser_package_command_product_id(parser_package):
@@ -212,6 +230,7 @@ def test_main_product_output(mocker, capsys):
                 no_cache=False,
                 short=False,
                 no_borders=False,
+                no_header=False,
             )
 
     data = {
@@ -256,6 +275,7 @@ def test_main_product_output_short(mocker, capsys):
                 no_cache=False,
                 short=True,
                 no_borders=False,
+                no_header=False,
             )
 
     data = {
@@ -295,6 +315,7 @@ def test_main_package_output(mocker, capsys):
                 product="1935",
                 exact_match=False,
                 no_borders=False,
+                no_header=False,
             )
 
     data = {
@@ -367,6 +388,7 @@ def test_main_package_output_exact_match(mocker, capsys):
                 product="1935",
                 exact_match=True,
                 no_borders=False,
+                no_header=False,
             )
 
     data = {

@@ -68,7 +68,10 @@ def create_parser(args=sys.argv[1:]):
             )
         if args[0] in ["product", "package"]:
             parser.add_argument(
-                "--no-borders", "-n", help="Don not print borders", action="store_true"
+                "--no-borders", "-n", help="Do not print borders", action="store_true"
+            )
+            parser.add_argument(
+                "--no-header", "-H", help="Do not print headers", action="store_true"
             )
         if args[0] == "completion":
             parser.add_argument("command", help="tab completion raleated tasks")
@@ -141,6 +144,7 @@ def main():
                         ]
                     )
         table.border = not args.no_borders
+        table.header = not args.no_header
         print(table)
     if args.command == "completion":
         print(completion.get(args.cache_file, args.shell))

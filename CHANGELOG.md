@@ -3,6 +3,7 @@ All notable changes will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- --no-header/-H option to product/package output
 - CHANGELOG.md
 - --no-borders/-n option to product/package output
 - --exact-match/-e option to product search
