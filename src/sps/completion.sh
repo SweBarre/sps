@@ -39,6 +39,13 @@ SPS_PACKAGE_COMPLETE="\
     --no-header\
     --help"
 
+SPS_PACKAGE_SORT_TABLE_COMPLETE="\
+    Name\
+    Version\
+    Release\
+    Arch\
+    Module"
+
 _sps_complete()
 {
     local cur prev firstword suggestions
@@ -64,6 +71,9 @@ _sps_complete()
             case "${prev}" in
                 package)
                     suggestions="$SPS_PACKAGE_PRODUCT_COMPLETE"
+                    ;;
+                --sort-table)
+                    suggestions="$SPS_PACKAGE_SORT_TABLE_COMPLETE"
                     ;;
                 *)
                     if [[ "${COMP_WORDS[COMP_CWORD-1]}" = "package" ]];then
