@@ -2,12 +2,25 @@ SPS_COMPLETE="\
     package\
     product\
     completion\
-    --help"
+    --help\
+    --version"
 
 SPS_PRODUCT_COMPLETE="\
     --update-cache\
     --no-cache\
-    --help"
+    --help\
+    --version\
+    --short\
+    --sort-table\
+    --no-borders\
+    --no-header"
+
+SPS_PRODUCT_SORT_TABLE_COMPLETE="\
+    id\
+    Name\
+    Edition\
+    Identifier\
+    Arch"
 
 
 if [[ -f {sps_cachefile} ]];then
@@ -21,7 +34,17 @@ SPS_COMPLETION_COMLPETE="\
     --help"
 
 SPS_PACKAGE_COMPLETE="\
+    --sort-table\
+    --no-borders\
+    --no-header\
     --help"
+
+SPS_PACKAGE_SORT_TABLE_COMPLETE="\
+    Name\
+    Version\
+    Release\
+    Arch\
+    Module"
 
 _sps_complete()
 {
@@ -33,6 +56,12 @@ _sps_complete()
     case "${firstword}" in
         product)
             case "${prev}" in
+                product)
+                    suggestions=""
+                    ;;
+                --sort-table)
+                    suggestions="$SPS_PRODUCT_SORT_TABLE_COMPLETE"
+                    ;;
                 *)
                     suggestions="$SPS_PRODUCT_COMPLETE"
                     ;;
@@ -40,8 +69,20 @@ _sps_complete()
             ;;
         package)
             case "${prev}" in
+                package)
+                    suggestions="$SPS_PACKAGE_PRODUCT_COMPLETE"
+                    ;;
+                --sort-table)
+                    suggestions="$SPS_PACKAGE_SORT_TABLE_COMPLETE"
+                    ;;
                 *)
-                    suggestions="$SPS_PACKAGE_COMPLETE $SPS_PACKAGE_PRODUCT_COMPLETE"
+                    if [[ "${COMP_WORDS[COMP_CWORD-1]}" = "package" ]];then
+                        suggestions=""
+                    elif [[ "${COMP_WORDS[COMP_CWORD-2]}" = "package" ]];then
+                        suggestions=""
+                    else
+                        suggestions="$SPS_PACKAGE_COMPLETE"
+                    fi
                     ;;
             esac
             ;;
@@ -63,10 +104,13 @@ _sps_complete()
 
 _sps_get_firstword() {
     local firstword i
+    local dual_options
+
 
     firstword=
     for ((i = 1; i < ${#COMP_WORDS[@]}; ++i)); do
-        if [[ ${COMP_WORDS[i]} != -* ]]; then
+        if [[ ${COMP_WORDS[i]} != -* ]] && \
+           [[ ! "-C --cache-file -S --sort-table" =~ "${COMP_WORDS[i-1]}" ]]; then
             firstword=${COMP_WORDS[i]}
             break
         fi
