@@ -43,7 +43,7 @@ def test_cache_save_load(data):
     os.remove(fn.name)
 
 
-def test_cache_save_bougus_data():
+def test_cache_save_bogus_data():
     """
     save will exit if bogus data provided
     """
@@ -52,6 +52,9 @@ def test_cache_save_bougus_data():
         cache.save("product", fn.name, "{age:100}")
     os.remove(fn.name)
 
+def test_cache_save_bogus_key():
+    with pytest.raises(SystemExit):
+        cache.save("fake-cache-key", "fake-file-name", [])
 
 def test_cache_load_bougus_data():
     """
@@ -74,6 +77,29 @@ def test_cache_save_permission_denied(data):
     with pytest.raises(SystemExit):
         cache.save("product", fn.name, data)
     os.remove(fn.name)
+
+
+def test_cache_save_key_load_old(data):
+    fn = tempfile.NamedTemporaryFile(delete=False)
+    existing_data = {
+            "testing": "testing",
+            "product": "product"
+            }
+    with open(fn.name, "w") as f:
+        json.dump(existing_data, f)
+
+    cache.save("product", fn.name, data["product"])
+
+    with open(fn.name, "r") as f:
+        cachedata = json.load(f)
+
+    new_data = {
+        "testing": "testing",
+        "product": data["product"]
+        }
+
+    assert new_data == cachedata
+
 
 
 def test_cache_load_permission_denied(data):
