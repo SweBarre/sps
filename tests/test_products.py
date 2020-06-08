@@ -44,9 +44,9 @@ def test_products_get_pattern_multiple_match(data, mocker):
     """
     mocker.patch("sps.request.fetch", autospec=True)
     request.fetch.return_value = data
-    assert products.get("1", "fake-file-name", False, False) == data
-    assert products.get("SUSE", "fake-file-name", False, False) == data
-    assert products.get("x86", "fake-file-name", False, False) == data
+    assert products.get("1", "fake-file-name", False, False) == data["data"]
+    assert products.get("SUSE", "fake-file-name", False, False) == data["data"]
+    assert products.get("x86", "fake-file-name", False, False) == data["data"]
 
 
 def test_products_get_pattern_single_match(data, mocker):
@@ -55,12 +55,8 @@ def test_products_get_pattern_single_match(data, mocker):
     """
     mocker.patch("sps.request.fetch", autospec=True)
     request.fetch.return_value = data
-    assert products.get("Manager", "fake-file-name", False, False) == {
-        "data": [data["data"][0]]
-    }
-    assert products.get("Desktop", "fake-file-name", False, False) == {
-        "data": [data["data"][1]]
-    }
+    assert products.get("Manager", "fake-file-name", False, False) == [data["data"][0]]
+    assert products.get("Desktop", "fake-file-name", False, False) == [data["data"][1]]
 
 
 def test_products_get_pattern_no_match(data, mocker):
@@ -69,9 +65,7 @@ def test_products_get_pattern_no_match(data, mocker):
     """
     mocker.patch("sps.request.fetch", autospec=True)
     request.fetch.return_value = data
-    assert products.get("foo-bar-search", "fake-file-name", False, False) == {
-        "data": []
-    }
+    assert products.get("foo-bar-search", "fake-file-name", False, False) == []
 
 
 def test_products_get(data, mocker):
@@ -90,10 +84,8 @@ def test_products_get_wrong_cache_data(data, mocker):
     """
     get will exit if no data field is found in response from cache
     """
-    wrongdata = {}
-    wrongdata["bad"] = data["data"]
     mocker.patch("sps.cache.load", autospec=True)
-    cache.load.return_value = wrongdata
+    cache.load.return_value = data
     with pytest.raises(SystemExit):
         products.get(None, __file__, False, False)
 
@@ -103,8 +95,8 @@ def test_products_get_cache(data, mocker):
     get wtil retrieve products from cache file
     """
     mocker.patch("sps.cache.load", autospec=True)
-    cache.load.return_value = data
-    assert products.get(None, __file__, False, False) == data
+    cache.load.return_value = {"product": data["data"]}
+    assert products.get(None, __file__, False, False) == data["data"]
 
 
 def test_products_update_cache(data, mocker):
@@ -115,4 +107,4 @@ def test_products_update_cache(data, mocker):
     mocker.patch("sps.request.fetch", autospec=True)
     request.fetch.return_value = data
     products.get(None, "fake-file-name", False, True)
-    cache.save.assert_called_with("fake-file-name", data)
+    cache.save.assert_called_with("product", "fake-file-name", data["data"])

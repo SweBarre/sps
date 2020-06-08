@@ -6,7 +6,7 @@ def get(product, pattern, cache_filename):
     try:
         product_id = int(product)
     except ValueError:
-        product_id = cache.lookup(product, cache_filename)
+        product_id = cache.lookup_product(product, cache_filename)
 
     url = f"https://scc.suse.com/api/package_search/packages?product_id={product_id}&query={pattern}"
     response = request.fetch(url)

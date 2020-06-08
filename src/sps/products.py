@@ -5,26 +5,32 @@ from sps import request, cache
 
 def get(pattern, cache_filename, no_cache, update_cache):
     cache_path = Path(cache_filename)
+    data = {}
     if cache_path.exists() and cache_path.is_file() and not no_cache:
-        response = cache.load(cache_filename)
+        data = cache.load(cache_filename)
+        try:
+            data["product"]
+        except KeyError as err:
+            print(f"Error: no product key found in cache file", file=sys.stderr)
+            sys.exit(1)
     else:
         response = request.fetch("https://scc.suse.com/api/package_search/products")
-    try:
-        response["data"]
-    except KeyError as err:
-        print(f"Error: No data key found, {err}", file=sys.stderr)
-        sys.exit(1)
+        try:
+            data["product"] = response["data"]
+        except KeyError as err:
+            print(f"Error: No data key found in scc api response, {err}", file=sys.stderr)
+            sys.exit(1)
 
-    if update_cache:
-        cache.save(cache_filename, response)
-    ret = {"data": []}
+    ret = []
     if not pattern:
-        ret = response
+        ret = data["product"]
     else:
-        for product in response["data"]:
+        for product in data["product"]:
             for k in product.keys():
                 if pattern in str(product[k]):
-                    ret["data"].append(product)
+                    ret.append(product)
                     break
 
+    if update_cache:
+        cache.save("product", cache_filename, ret)
     return ret
