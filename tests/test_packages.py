@@ -31,7 +31,7 @@ def test_product_get_with_id(mocker, requests_response):
     """
     mocker.patch("requests.get", autospec=True)
     requests.get.return_value = requests_response
-    assert packages.get(1899, "vim", "filename") == {"data": [{"foo": "bar"}]}
+    assert packages.get(1899, "vim", "filename") == [{"foo": "bar"}]
     requests.get.assert_called_with(
         "https://scc.suse.com/api/package_search/packages?product_id=1899&query=vim",
         request.headers,

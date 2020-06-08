@@ -6,6 +6,22 @@ from sps import products, packages, completion, __version__
 
 
 def create_parser(args=sys.argv[1:]):
+    """Create a argparse.ArgumentParser
+
+    Creates a ArgumentParser based on command line
+
+    Parameters
+    ----------
+    args: list, optional
+        a list that represents how it was called from the command line
+        if not specified the list is build wid sys.argv[1:]
+
+    Returns
+    -------
+    argparse.ArgumentParser
+    """
+
+
     parser = ArgumentParser()
     for opt in ["-C", "--cache-file"]:
         try:
@@ -100,6 +116,9 @@ def create_parser(args=sys.argv[1:]):
 
 
 def main():
+    """The main program logic"""
+
+
     parser = create_parser()
     args = parser.parse_args()
 
@@ -112,7 +131,7 @@ def main():
             table.field_names = ["id", "Name", "Edition", "Identifier", "Arch"]
             for name in table.field_names:
                 table.align[name] = "l"
-            for product in product_data:
+            for product in products_data:
                 table.add_row(
                     [
                         product["id"],
