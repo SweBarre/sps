@@ -31,7 +31,7 @@ def test_product_get_with_id(mocker, requests_response):
     """
     mocker.patch("requests.get", autospec=True)
     requests.get.return_value = requests_response
-    assert packages.get(1899, "vim", "filename") == {"data": [{"foo": "bar"}]}
+    assert packages.get(1899, "vim", "filename") == [{"foo": "bar"}]
     requests.get.assert_called_with(
         "https://scc.suse.com/api/package_search/packages?product_id=1899&query=vim",
         request.headers,
@@ -44,8 +44,8 @@ def test_product_get_with_product_identifier(mocker, requests_response):
     """
     mocker.patch("requests.get", autospec=True)
     requests.get.return_value = requests_response
-    mocker.patch("sps.cache.lookup", autospec=True)
-    cache.lookup.return_value = 1899
+    mocker.patch("sps.cache.lookup_product", autospec=True)
+    cache.lookup_product.return_value = 1899
     packages.get("SLED/15.2/x86_64", "vim", "filename")
     requests.get.assert_called_with(
         "https://scc.suse.com/api/package_search/packages?product_id=1899&query=vim",

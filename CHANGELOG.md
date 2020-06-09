@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 - --version/-v option
 
 ### Changed
+- changed default cache file name to ~/.cache/sps_cache.json
 - Product/Package headings in README.rst
 - description of sps in README.rst
 - typo i README.rst

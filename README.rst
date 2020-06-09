@@ -30,7 +30,7 @@ Usage
       -h, --help            show this help message and exit
       --cache-file CACHE_FILE, -C CACHE_FILE
                             cache file to use, (default:
-                            /home/jonas/.cache/sps_products.json
+                            /home/jonas/.cache/sps_cache.json
       --version, -v         show program's version number and exit
 
 Shell completion
@@ -64,7 +64,7 @@ Product search
       -h, --help            show this help message and exit
       --cache-file CACHE_FILE, -C CACHE_FILE
                             cache file to use, (default:
-                            /home/jonas/.cache/sps_products.json
+                            /home/jonas/.cache/sps_cache.json
       --version, -v         show program's version number and exit
       --update-cache, -u    Update the local product cache
       --no-cache, -N        Don't use the local cache
@@ -115,7 +115,7 @@ Package search
       -h, --help            show this help message and exit
       --cache-file CACHE_FILE, -C CACHE_FILE
                             cache file to use, (default:
-                            /home/jonas/.cache/sps_products.json
+                            /home/jonas/.cache/sps_cache.json
       --version, -v         show program's version number and exit
       --exact-match, -e     Only show where PATTERN matches exact
       --sort-table {Name,Version,Release,Arch,Module}, -S {Name,Version,Release,Arch,Module}

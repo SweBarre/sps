@@ -6,6 +6,21 @@ from sps import products, packages, completion, __version__
 
 
 def create_parser(args=sys.argv[1:]):
+    """Create a argparse.ArgumentParser
+
+    Creates a ArgumentParser based on command line
+
+    Parameters
+    ----------
+    args: list, optional
+        a list that represents how it was called from the command line
+        if not specified the list is build wid sys.argv[1:]
+
+    Returns
+    -------
+    argparse.ArgumentParser
+    """
+
     parser = ArgumentParser()
     for opt in ["-C", "--cache-file"]:
         try:
@@ -18,7 +33,7 @@ def create_parser(args=sys.argv[1:]):
     parser.add_argument(
         "--cache-file",
         "-C",
-        help=f"cache file to use, (default: { str(Path.home()) }/.cache/sps_products.json",
+        help=f"cache file to use, (default: { str(Path.home()) }/.cache/sps_cache.json",
         default=f"{ str(Path.home()) }/.cache/sps_products.json",
     )
     parser.add_argument(
@@ -100,19 +115,21 @@ def create_parser(args=sys.argv[1:]):
 
 
 def main():
+    """The main program logic"""
+
     parser = create_parser()
     args = parser.parse_args()
 
     if args.command in ["product", "package"]:
         table = PrettyTable()
         if args.command == "product":
-            product_data = products.get(
+            products_data = products.get(
                 args.pattern, args.cache_file, args.no_cache, args.update_cache
             )
             table.field_names = ["id", "Name", "Edition", "Identifier", "Arch"]
             for name in table.field_names:
                 table.align[name] = "l"
-            for product in product_data["data"]:
+            for product in products_data:
                 table.add_row(
                     [
                         product["id"],
@@ -133,7 +150,7 @@ def main():
             table.field_names = ["Name", "Version", "Release", "Arch", "Module"]
             for name in table.field_names:
                 table.align[name] = "l"
-            for package in package_data["data"]:
+            for package in package_data:
                 module_line = ""
                 for product in package["products"]:
                     module_line = "{},{}".format(module_line, product["name"])

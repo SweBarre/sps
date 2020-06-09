@@ -277,7 +277,7 @@ def test_main_product_output(mocker, capsys):
     }
 
     mocker.patch("sps.products.get", autospec=True)
-    products.get.return_value = data
+    products.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
 
@@ -323,7 +323,7 @@ def test_main_product_output_short(mocker, capsys):
     }
 
     mocker.patch("sps.products.get", autospec=True)
-    products.get.return_value = data
+    products.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
 
@@ -391,7 +391,7 @@ def test_main_package_output(mocker, capsys):
     }
 
     mocker.patch("sps.packages.get", autospec=True)
-    packages.get.return_value = data
+    packages.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
 
@@ -465,7 +465,7 @@ def test_main_package_output_exact_match(mocker, capsys):
     }
 
     mocker.patch("sps.packages.get", autospec=True)
-    packages.get.return_value = data
+    packages.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
 
