@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from argparse import ArgumentParser
 from prettytable import PrettyTable
-from sps import products, packages, completion, __version__
+from sps import cache, products, packages, completion, __version__
 
 
 def create_parser(args=sys.argv[1:]):
@@ -22,7 +22,7 @@ def create_parser(args=sys.argv[1:]):
     """
 
     parser = ArgumentParser()
-    for opt in ["-C", "--cache-file"]:
+    for opt in ["-C", "--cache-file", "-a", "--cache-age"]:
         try:
             i = args.index(opt)
             args.pop(i + 1)
@@ -35,6 +35,13 @@ def create_parser(args=sys.argv[1:]):
         "-C",
         help=f"cache file to use, (default: { str(Path.home()) }/.cache/sps_cache.json",
         default=f"{ str(Path.home()) }/.cache/sps_cache.json",
+    )
+    parser.add_argument(
+        "--cache-age",
+        "-a",
+        help="Number of days before cahce entry is flagged as old",
+        type=int,
+        default=60,
     )
     parser.add_argument(
         "--version", "-v", action="version", version=f"%(prog)s {__version__}"
@@ -180,3 +187,7 @@ def main():
         print(table)
     if args.command == "completion":
         print(completion.get(args.cache_file, args.shell))
+
+    cacheages = cache.age(args.cache_file, args.cache_age)
+    for key, value in cacheages.items():
+        print(f"Warning: The {key} cache is old, last updated {value}", file=sys.stderr)

@@ -1,6 +1,8 @@
 import json
 import sys
 from pathlib import Path
+from datetime import datetime
+from typing import Dict
 
 
 def save(key, filename, data):
@@ -41,6 +43,11 @@ def save(key, filename, data):
         cache_data = load(filename)
 
     cache_data[key] = data
+    try:
+        cache_data["age"][key] = datetime.now().strftime("%Y-%m-%d")
+    except KeyError:
+        cache_data["age"] = {}
+        cache_data["age"][key] = datetime.now().strftime("%Y-%m-%d")
 
     try:
         with open(filename, "w") as f:
@@ -50,7 +57,7 @@ def save(key, filename, data):
         sys.exit(13)
 
 
-def load(filename):
+def load(filename) -> Dict:
     """Load cache from filename
 
     The cache file is a json file and retruns a dictionary
@@ -72,6 +79,7 @@ def load(filename):
         if unable to decode cache file as JSON
     """
 
+    data = {}
     try:
         with open(filename, "r") as f:
             data = json.load(f)
@@ -81,7 +89,39 @@ def load(filename):
     except json.decoder.JSONDecodeError as err:
         print(f"Error: unable to parse {filename} as JSON, {err}", file=sys.stderr)
         sys.exit(1)
+    except FileNotFoundError:
+        pass
     return data
+
+def age(filename, age) -> Dict:
+    """Check the age of the different elements in the cache
+
+    Parameters
+    ----------
+    filename: str
+        path to cache file
+    age: int
+        number of days that would indicate old cache data
+
+    Returns
+    -------
+    list
+        returns a list of cache elements that is old
+        the key is the cache element as str
+        the value is the date str %Y-%m-%d when the cache was saved
+    """
+
+
+    ret = {}
+    cache_data = load(filename)
+    now = datetime.now()
+    if cache_data:
+        for key, value in cache_data["age"].items():
+            cacheage = now - datetime.strptime(value, "%Y-%m-%d")
+            if cacheage.days > age:
+                ret[key]=value
+    return ret
+
 
 
 def lookup_product(identifier, filename):
