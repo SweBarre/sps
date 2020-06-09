@@ -104,6 +104,23 @@ def test_cache_save_key_load_old(data):
     assert new_data == cachedata
 
 
+def test_cache_save_permission_denied(data):
+    """
+    load should exit the cache
+    """
+    fn = tempfile.NamedTemporaryFile(delete=False)
+    os.remove(fn.name)
+    cache.save("product", fn.name, data["product"])
+    os.chmod(fn.name, stat.S_IRUSR)
+    with pytest.raises(SystemExit):
+        cache.save("product", fn.name, data["product"])
+    os.remove(fn.name)
+
+
+def test_cache_load_file_not_found(data):
+    assert cache.load("file-not-found") == {}
+
+
 def test_cache_load_permission_denied(data):
     """
     load should exit the cache

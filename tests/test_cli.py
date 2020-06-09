@@ -556,7 +556,7 @@ def test_main_aged_cache_no_return(mocker, capsys, data):
                 cache_file="fake-file-name",
                 update_cache=False,
                 no_cache=False,
-                short=True,
+                short=False,
                 no_borders=False,
                 no_header=False,
                 sort_table="id",
@@ -564,10 +564,11 @@ def test_main_aged_cache_no_return(mocker, capsys, data):
             )
 
 
+    mocker.patch("sps.cli.PrettyTable", autospec=True)
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
     mocker.patch("sps.products.get", autospec=True)
-    products.get.return_value = data["product"]
+    products.get.return_value = {}
     mocker.patch("sps.cache.age", autospec=True)
     cache.age.return_value = {}
     cli.main()
