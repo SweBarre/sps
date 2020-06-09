@@ -10,6 +10,7 @@ from datetime import datetime
 @pytest.fixture
 def data():
     return {
+        "age": {"product": "2019-01-01"},
         "product": [
             {
                 "id": 1899,
@@ -29,7 +30,7 @@ def data():
                 "edition": "15 SP2",
                 "architecture": "x86_64",
             },
-        ]
+        ],
     }
 
 
@@ -95,9 +96,9 @@ def test_cache_save_key_load_old(data):
         cachedata = json.load(f)
 
     new_data = {
-        "testing": "testing", 
+        "testing": "testing",
         "age": {"product": datetime.now().strftime("%Y-%m-%d")},
-        "product": data["product"]
+        "product": data["product"],
     }
 
     assert new_data == cachedata
@@ -122,7 +123,7 @@ def test_cache_lookup_product_found(data):
     """
     fn = tempfile.NamedTemporaryFile(delete=False)
     os.remove(fn.name)
-    cache.save("product", fn.name, data["product"]) == None
+    cache.save("product", fn.name, data["product"])
     assert cache.lookup_product("SLED/15.2/x86_64", fn.name) == 1935
     os.remove(fn.name)
 
@@ -133,12 +134,24 @@ def test_cache_lookup_product_notfound(data):
     """
     fn = tempfile.NamedTemporaryFile(delete=False)
     os.remove(fn.name)
-    cache.save("product", fn.name, data["product"]) == None
+    cache.save("product", fn.name, data["product"])
     with pytest.raises(SystemExit):
         cache.lookup_product("Bogus product name", fn.name)
     os.remove(fn.name)
 
-def test_cache_age_warning_not_old(data):
+
+def test_cache_age_not_old(data):
     """
     """
-    pass
+    fn = tempfile.NamedTemporaryFile(delete=False)
+    os.remove(fn.name)
+    cache.save("product", fn.name, data["product"])
+    assert cache.age(fn.name, 60) == []
+    os.remove(fn.name)
+
+
+def test_cache_age_old(data, mocker):
+    mocker.patch("sps.cache.load")
+    cache.load.return_value = data
+    aged = cache.age("fake-file-name", 60)
+    assert aged == [data["age"]]

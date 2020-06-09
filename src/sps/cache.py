@@ -89,6 +89,35 @@ def load(filename):
         sys.exit(1)
     return data
 
+def age(filename, age):
+    """Check the age of the different elements in the cache
+
+    Parameters
+    ----------
+    filename: str
+        path to cache file
+    age: int
+        number of days that would indicate old cache data
+
+    Returns
+    -------
+    list
+        returns a list of cache elements that is old
+        the key is the cache element as str
+        the value is the date str %Y-%m-%d when the cache was saved
+    """
+
+
+    ret = []
+    cache_data = load(filename)
+    now = datetime.now()
+    for key, value in cache_data["age"].items():
+        cacheage = now - datetime.strptime(value, "%Y-%m-%d")
+        if cacheage.days > age:
+            ret.append({key: value})
+    return ret
+
+
 
 def lookup_product(identifier, filename):
     """Lookup a product in the cache
