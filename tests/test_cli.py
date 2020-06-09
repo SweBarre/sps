@@ -104,7 +104,7 @@ def test_parser_cache_file(parser):
     parser will not exit with match
     """
     args = parser.parse_args(["product"])
-    assert args.cache_file == f"{str(Path.home())}/.cache/sps_products.json"
+    assert args.cache_file == f"{str(Path.home())}/.cache/sps_cache.json"
     args = parser.parse_args(["product", "--cache-file", "testing"])
     assert args.cache_file == "testing"
     args = parser.parse_args(["product", "-C", "testing2"])
@@ -116,7 +116,7 @@ def test_parser_product_command_update_cache(parser_product):
     parser with product command --update-cache, false default
     """
     args = parser_product.parse_args("product --update-cache".split())
-    assert args.cache_file == f"{str(Path.home())}/.cache/sps_products.json"
+    assert args.cache_file == f"{str(Path.home())}/.cache/sps_cache.json"
     assert args.update_cache == True
     args = parser_product.parse_args("product -u".split())
     assert args.update_cache == True
@@ -219,7 +219,7 @@ def test_parser_package_command_product_id(parser_package):
     parser with package command --product
     """
     args = parser_package.parse_args("package testing".split())
-    assert args.cache_file == f"{str(Path.home())}/.cache/sps_products.json"
+    assert args.cache_file == f"{str(Path.home())}/.cache/sps_cache.json"
     assert args.product == "testing"
     assert args.pattern == None
     args = parser_package.parse_args("package testing2 vim".split())
