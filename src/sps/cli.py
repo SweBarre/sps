@@ -34,7 +34,7 @@ def create_parser(args=sys.argv[1:]):
         "--cache-file",
         "-C",
         help=f"cache file to use, (default: { str(Path.home()) }/.cache/sps_cache.json",
-        default=f"{ str(Path.home()) }/.cache/sps_products.json",
+        default=f"{ str(Path.home()) }/.cache/sps_cache.json",
     )
     parser.add_argument(
         "--version", "-v", action="version", version=f"%(prog)s {__version__}"
