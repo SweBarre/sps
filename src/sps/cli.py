@@ -3,6 +3,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 from prettytable import PrettyTable
 from sps import cache, products, packages, completion, __version__
+from sps.helpers import print_warn
 
 
 def create_parser(args=sys.argv[1:]):
@@ -190,4 +191,4 @@ def main():
 
     cacheages = cache.age(args.cache_file, args.cache_age)
     for key, value in cacheages.items():
-        print(f"Warning: The {key} cache is old, last updated {value}", file=sys.stderr)
+        print_warn(f"The {key} cache is old, last updated {value}")

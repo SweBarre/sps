@@ -16,6 +16,7 @@ def print_warn(message):
 
     print(f"{CWARNING}Warning:{CRESET} {message}", file=sys.stderr)
 
+
 def print_err(message):
     """Print formated message to stderr
 

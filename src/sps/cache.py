@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from typing import Dict
+from sps.helpers import print_err
 
 
 def save(key, filename, data):
@@ -33,10 +34,10 @@ def save(key, filename, data):
 
     cache_data = {}
     if not key in ["product"]:
-        print(f"Error: trying to save cache with unknown key '{key}'", file=sys.stderr)
+        print_err(f"trying to save cache with unknown key '{key}'")
         sys.exit(1)
     if not isinstance(data, list):
-        print(f"Error: Must have list as data source to save cache", file=sys.stderr)
+        print_err("Must have list as data source to save cache")
         sys.exit(1)
 
     if Path(filename).is_file():
@@ -53,7 +54,7 @@ def save(key, filename, data):
         with open(filename, "w") as f:
             json.dump(cache_data, f)
     except PermissionError as err:
-        print(f"Error: {err}", file=sys.stderr)
+        print_err({err})
         sys.exit(13)
 
 
@@ -84,14 +85,15 @@ def load(filename) -> Dict:
         with open(filename, "r") as f:
             data = json.load(f)
     except PermissionError as err:
-        print(f"Error: {err}", file=sys.stderr)
+        print_err({err})
         sys.exit(13)
     except json.decoder.JSONDecodeError as err:
-        print(f"Error: unable to parse {filename} as JSON, {err}", file=sys.stderr)
+        print_err(f"unable to parse {filename} as JSON, {err}")
         sys.exit(1)
     except FileNotFoundError:
         pass
     return data
+
 
 def age(filename, age) -> Dict:
     """Check the age of the different elements in the cache
@@ -111,7 +113,6 @@ def age(filename, age) -> Dict:
         the value is the date str %Y-%m-%d when the cache was saved
     """
 
-
     ret = {}
     cache_data = load(filename)
     now = datetime.now()
@@ -119,9 +120,8 @@ def age(filename, age) -> Dict:
         for key, value in cache_data["age"].items():
             cacheage = now - datetime.strptime(value, "%Y-%m-%d")
             if cacheage.days > age:
-                ret[key]=value
+                ret[key] = value
     return ret
-
 
 
 def lookup_product(identifier, filename):
@@ -151,5 +151,5 @@ def lookup_product(identifier, filename):
     for product in data["product"]:
         if product["identifier"] == identifier:
             return product["id"]
-    print(f"Couldn't find id for '{identifier}'", file=sys.stderr)
+    print_err(f"Couldn't find id for '{identifier}'")
     sys.exit(1)

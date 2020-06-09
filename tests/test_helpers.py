@@ -1,5 +1,6 @@
 from sps import helpers
 
+
 def test_print_warn(capsys):
     helpers.print_warn("testing")
     captured = capsys.readouterr()

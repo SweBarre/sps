@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 from prettytable import PrettyTable
 import prettytable
 from pathlib import Path
-from sps import cli, products, packages, completion, cache, __version__
+from sps import helpers, cli, products, packages, completion, cache, __version__
 
 
 @pytest.fixture
@@ -36,6 +36,7 @@ def args():
         no_cache=False,
     )
 
+
 @pytest.fixture
 def data():
     return {
@@ -60,6 +61,7 @@ def data():
             },
         ]
     }
+
 
 def test_parser_with_unknown_command(parser):
     """
@@ -538,7 +540,7 @@ def test_main_completion(mocker):
             )
 
     mocker.patch("sps.cache.age", autospec=True)
-    cache.age.return_values={}
+    cache.age.return_values = {}
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
     mocker.patch("sps.completion.get", autospec=True)
@@ -560,9 +562,8 @@ def test_main_aged_cache_no_return(mocker, capsys, data):
                 no_borders=False,
                 no_header=False,
                 sort_table="id",
-                cache_age=60
+                cache_age=60,
             )
-
 
     mocker.patch("sps.cli.PrettyTable", autospec=True)
     mocker.patch("sps.cli.create_parser", autospec=True)
@@ -576,5 +577,7 @@ def test_main_aged_cache_no_return(mocker, capsys, data):
     cache.age.return_value = {"testing": "date"}
     cli.main()
     captured = capsys.readouterr()
-    assert captured.err.strip() == "Warning: The testing cache is old, last updated date"
-
+    assert (
+        captured.err.strip()
+        == f"{helpers.CWARNING}Warning:{helpers.CRESET} The testing cache is old, last updated date"
+    )
