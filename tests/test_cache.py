@@ -52,9 +52,11 @@ def test_cache_save_bogus_data():
         cache.save("product", fn.name, "{age:100}")
     os.remove(fn.name)
 
+
 def test_cache_save_bogus_key():
     with pytest.raises(SystemExit):
         cache.save("fake-cache-key", "fake-file-name", [])
+
 
 def test_cache_load_bougus_data():
     """
@@ -81,10 +83,7 @@ def test_cache_save_permission_denied(data):
 
 def test_cache_save_key_load_old(data):
     fn = tempfile.NamedTemporaryFile(delete=False)
-    existing_data = {
-            "testing": "testing",
-            "product": "product"
-            }
+    existing_data = {"testing": "testing", "product": "product"}
     with open(fn.name, "w") as f:
         json.dump(existing_data, f)
 
@@ -93,13 +92,9 @@ def test_cache_save_key_load_old(data):
     with open(fn.name, "r") as f:
         cachedata = json.load(f)
 
-    new_data = {
-        "testing": "testing",
-        "product": data["product"]
-        }
+    new_data = {"testing": "testing", "product": data["product"]}
 
     assert new_data == cachedata
-
 
 
 def test_cache_load_permission_denied(data):

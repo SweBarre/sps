@@ -29,17 +29,12 @@ def save(key, filename, data):
         if PermissionError is raised when saving to filename
     """
 
-
     cache_data = {}
     if not key in ["product"]:
-        print(
-            f"Error: trying to save cache with unknown key '{key}'", file=sys.stderr
-        )
+        print(f"Error: trying to save cache with unknown key '{key}'", file=sys.stderr)
         sys.exit(1)
     if not isinstance(data, list):
-        print(
-            f"Error: Must have list as data source to save cache", file=sys.stderr
-        )
+        print(f"Error: Must have list as data source to save cache", file=sys.stderr)
         sys.exit(1)
 
     if Path(filename).is_file():
@@ -77,7 +72,6 @@ def load(filename):
         if unable to decode cache file as JSON
     """
 
-
     try:
         with open(filename, "r") as f:
             data = json.load(f)
@@ -112,7 +106,6 @@ def lookup_product(identifier, filename):
     SystemExit
         if no product matches the identifier
     """
-
 
     data = load(filename)
     for product in data["product"]:

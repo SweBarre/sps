@@ -18,7 +18,9 @@ def get(pattern, cache_filename, no_cache, update_cache):
         try:
             data["product"] = response["data"]
         except KeyError as err:
-            print(f"Error: No data key found in scc api response, {err}", file=sys.stderr)
+            print(
+                f"Error: No data key found in scc api response, {err}", file=sys.stderr
+            )
             sys.exit(1)
 
     ret = []

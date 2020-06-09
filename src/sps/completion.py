@@ -22,7 +22,6 @@ def get(cachefile, shell=None):
         if completion generation file is not readable
     """
 
-
     if shell == None:
         try:
             os.environ["SHELL"]

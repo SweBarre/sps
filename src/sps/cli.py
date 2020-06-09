@@ -21,7 +21,6 @@ def create_parser(args=sys.argv[1:]):
     argparse.ArgumentParser
     """
 
-
     parser = ArgumentParser()
     for opt in ["-C", "--cache-file"]:
         try:
@@ -117,7 +116,6 @@ def create_parser(args=sys.argv[1:]):
 
 def main():
     """The main program logic"""
-
 
     parser = create_parser()
     args = parser.parse_args()

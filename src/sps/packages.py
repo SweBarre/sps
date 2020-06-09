@@ -29,7 +29,6 @@ def get(product, pattern, cache_filename):
         if the response from SUSE Customer Center is not parsable
     """
 
-
     try:
         product_id = int(product)
     except ValueError:
