@@ -131,3 +131,7 @@ def test_cache_lookup_product_notfound(data):
     with pytest.raises(SystemExit):
         cache.lookup_product("Bogus product name", fn.name)
     os.remove(fn.name)
+
+def test_cache_age_warning_not_old(data):
+    """
+    

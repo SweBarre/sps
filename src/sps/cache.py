@@ -1,6 +1,7 @@
 import json
 import sys
 from pathlib import Path
+from datetime import datetime
 
 
 def save(key, filename, data):
@@ -41,6 +42,11 @@ def save(key, filename, data):
         cache_data = load(filename)
 
     cache_data[key] = data
+    try:
+        cache_data["age"][key] = datetime.now().strftime("%Y-%m-%d")
+    except KeyError:
+        cache_data["age"] = {}
+        cache_data["age"][key] = datetime.now().strftime("%Y-%m-%d")
 
     try:
         with open(filename, "w") as f:
