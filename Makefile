@@ -27,7 +27,7 @@ black-diff: guard-PIPENV_ACTIVE
 	black --diff src/ tests/
 
 safety: guard-PIPENV_ACTIVE
-	pip freeze | safety check --stdin
+	pipenv lock --requirements | safety check --stdin
 
 tag: guard-PIPENV_ACTIVE wheel
 	@bash tag.sh
