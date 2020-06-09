@@ -4,6 +4,7 @@ import json
 import os
 import stat
 from sps import cache
+from datetime import datetime
 
 
 @pytest.fixture
@@ -39,6 +40,7 @@ def test_cache_save_load(data):
     fn = tempfile.NamedTemporaryFile(delete=False)
     os.remove(fn.name)
     assert cache.save("product", fn.name, data["product"]) == None
+    data["age"] = {"product": datetime.now().strftime("%Y-%m-%d")}
     assert cache.load(fn.name) == data
     os.remove(fn.name)
 
@@ -92,7 +94,11 @@ def test_cache_save_key_load_old(data):
     with open(fn.name, "r") as f:
         cachedata = json.load(f)
 
-    new_data = {"testing": "testing", "product": data["product"]}
+    new_data = {
+        "testing": "testing", 
+        "age": {"product": datetime.now().strftime("%Y-%m-%d")},
+        "product": data["product"]
+    }
 
     assert new_data == cachedata
 
@@ -134,4 +140,5 @@ def test_cache_lookup_product_notfound(data):
 
 def test_cache_age_warning_not_old(data):
     """
-    
+    """
+    pass
