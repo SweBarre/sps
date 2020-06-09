@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 from prettytable import PrettyTable
 import prettytable
 from pathlib import Path
-from sps import cli, products, packages, completion, __version__
+from sps import cli, products, packages, completion, cache, __version__
 
 
 @pytest.fixture
@@ -36,6 +36,30 @@ def args():
         no_cache=False,
     )
 
+@pytest.fixture
+def data():
+    return {
+        "product": [
+            {
+                "id": 1899,
+                "name": "SUSE Manager Server",
+                "identifier": "SUSE-Manager-Server/4.0/x86_64",
+                "type": "base",
+                "free": False,
+                "edition": "4.0",
+                "architecture": "x86_64",
+            },
+            {
+                "id": 1935,
+                "name": "SUSE Linux Enterprise Desktop",
+                "identifier": "SLED/15.2/x86_64",
+                "type": "base",
+                "free": False,
+                "edition": "15 SP2",
+                "architecture": "x86_64",
+            },
+        ]
+    }
 
 def test_parser_with_unknown_command(parser):
     """
@@ -109,6 +133,15 @@ def test_parser_cache_file(parser):
     assert args.cache_file == "testing"
     args = parser.parse_args(["product", "-C", "testing2"])
     assert args.cache_file == "testing2"
+
+
+def test_parser_cache_age(parser):
+    args = parser.parse_args(["product"])
+    assert args.cache_age == 60
+    args = parser.parse_args(["product", "--cache-age", "30"])
+    assert args.cache_age == 30
+    args = parser.parse_args(["product", "-a", "20"])
+    assert args.cache_age == 20
 
 
 def test_parser_product_command_update_cache(parser_product):
@@ -260,6 +293,7 @@ def test_main_product_output(mocker, capsys):
                 no_borders=False,
                 no_header=False,
                 sort_table="id",
+                cache_age=60,
             )
 
     data = {
@@ -276,6 +310,8 @@ def test_main_product_output(mocker, capsys):
         ]
     }
 
+    mocker.patch("sps.cache.age", autospec=True)
+    cache.age.return_value = {}
     mocker.patch("sps.products.get", autospec=True)
     products.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
@@ -306,6 +342,7 @@ def test_main_product_output_short(mocker, capsys):
                 no_borders=False,
                 no_header=False,
                 sort_table="id",
+                cache_age=60,
             )
 
     data = {
@@ -322,6 +359,8 @@ def test_main_product_output_short(mocker, capsys):
         ]
     }
 
+    mocker.patch("sps.cache.age", autospec=True)
+    cache.age.return_value = {}
     mocker.patch("sps.products.get", autospec=True)
     products.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
@@ -347,6 +386,7 @@ def test_main_package_output(mocker, capsys):
                 no_borders=False,
                 no_header=False,
                 sort_table="Name",
+                cache_age=60,
             )
 
     data = {
@@ -390,6 +430,8 @@ def test_main_package_output(mocker, capsys):
         ]
     }
 
+    mocker.patch("sps.cache.age", autospec=True)
+    cache.age.return_value = {}
     mocker.patch("sps.packages.get", autospec=True)
     packages.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
@@ -421,6 +463,7 @@ def test_main_package_output_exact_match(mocker, capsys):
                 no_borders=False,
                 no_header=False,
                 sort_table="Name",
+                cache_age=60,
             )
 
     data = {
@@ -464,6 +507,8 @@ def test_main_package_output_exact_match(mocker, capsys):
         ]
     }
 
+    mocker.patch("sps.cache.age", autospec=True)
+    cache.age.return_value = {}
     mocker.patch("sps.packages.get", autospec=True)
     packages.get.return_value = data["data"]
     mocker.patch("sps.cli.create_parser", autospec=True)
@@ -489,11 +534,47 @@ def test_main_completion(mocker):
                 short=None,
                 cache_file="fake-file-name",
                 shell="bash",
+                cache_age=60,
             )
 
+    mocker.patch("sps.cache.age", autospec=True)
+    cache.age.return_values={}
     mocker.patch("sps.cli.create_parser", autospec=True)
     cli.create_parser.return_value = parser_proxy()
     mocker.patch("sps.completion.get", autospec=True)
     completion.get.return_value = "\n"
     cli.main()
     completion.get.assert_called_with("fake-file-name", "bash")
+
+
+def test_main_aged_cache_no_return(mocker, capsys, data):
+    class parser_proxy:
+        def parse_args(self):
+            return Namespace(
+                command="product",
+                pattern=None,
+                cache_file="fake-file-name",
+                update_cache=False,
+                no_cache=False,
+                short=False,
+                no_borders=False,
+                no_header=False,
+                sort_table="id",
+                cache_age=60
+            )
+
+
+    mocker.patch("sps.cli.PrettyTable", autospec=True)
+    mocker.patch("sps.cli.create_parser", autospec=True)
+    cli.create_parser.return_value = parser_proxy()
+    mocker.patch("sps.products.get", autospec=True)
+    products.get.return_value = {}
+    mocker.patch("sps.cache.age", autospec=True)
+    cache.age.return_value = {}
+    cli.main()
+    cache.age.assert_called_once_with("fake-file-name", 60)
+    cache.age.return_value = {"testing": "date"}
+    cli.main()
+    captured = capsys.readouterr()
+    assert captured.err.strip() == "Warning: The testing cache is old, last updated date"
+
