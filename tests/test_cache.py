@@ -78,9 +78,11 @@ def test_cache_save_permission_denied(data):
     save should exit the cache
     """
     fn = tempfile.NamedTemporaryFile(delete=False)
+    os.remove(fn.name)
+    cache.save("product", fn.name, data["product"])
     os.chmod(fn.name, stat.S_IRUSR)
     with pytest.raises(SystemExit):
-        cache.save("product", fn.name, data)
+        cache.save("product", fn.name, data["product"])
     os.remove(fn.name)
 
 

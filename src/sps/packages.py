@@ -1,5 +1,6 @@
 import sys
 from sps import request, cache
+from sps.helpers import print_err
 
 
 def get(product, pattern, cache_filename):
@@ -39,6 +40,6 @@ def get(product, pattern, cache_filename):
     try:
         response["data"]
     except KeyError as err:
-        print(f"Error: No data key found, {err}", file=sys.stderr)
+        print_err(f"Error: No data key found, {err}")
         sys.exit(1)
     return response["data"]
