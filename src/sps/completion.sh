@@ -3,9 +3,13 @@ SPS_COMPLETE="\
     product\
     completion\
     --help\
-    --version"
+    --version\
+    --cache-age\
+    --cache-file"
 
 SPS_PRODUCT_COMPLETE="\
+    --cache-age\
+    --cache-file\
     --update-cache\
     --no-cache\
     --help\
@@ -34,6 +38,8 @@ SPS_COMPLETION_COMLPETE="\
     --help"
 
 SPS_PACKAGE_COMPLETE="\
+    --cache-age\
+    --cache-file\
     --sort-table\
     --no-borders\
     --no-header\
@@ -62,6 +68,12 @@ _sps_complete()
                 --sort-table)
                     suggestions="$SPS_PRODUCT_SORT_TABLE_COMPLETE"
                     ;;
+                --cache-file)
+                    suggestions=""
+                    ;;
+                --cache-age)
+                    suggestions=""
+                    ;;
                 *)
                     suggestions="$SPS_PRODUCT_COMPLETE"
                     ;;
@@ -75,6 +87,12 @@ _sps_complete()
                 --sort-table)
                     suggestions="$SPS_PACKAGE_SORT_TABLE_COMPLETE"
                     ;;
+                --cache-file)
+                    suggestions=""
+                    ;;
+                --cache-age)
+                    suggestions=""
+                    ;;
                 *)
                     if [[ "${COMP_WORDS[COMP_CWORD-1]}" = "package" ]];then
                         suggestions=""
@@ -87,11 +105,30 @@ _sps_complete()
             esac
             ;;
         completion)
-            suggestions="$SPS_COMPLETION_COMLPETE"
+            case "${prev}" in
+                --cache-file)
+                    suggestions=""
+                    ;;
+                --cache-age)
+                    suggestions=""
+                    ;;
+                *)
+                    suggestions="$SPS_COMPLETION_COMLPETE"
+                ;;
+            esac
             ;;
         *)
-            suggestions="$SPS_COMPLETE"
-            ;;
+            case "${prev}" in
+                --cache-file)
+                    suggestions=""
+                    ;;
+                 --cache-age)
+                    suggestions=""
+                    ;;
+                *)
+                    suggestions="$SPS_COMPLETE"
+                    ;;
+            esac
     esac
 
     if [[ "${suggestions}x" == "x" ]];then
@@ -110,7 +147,7 @@ _sps_get_firstword() {
     firstword=
     for ((i = 1; i < ${#COMP_WORDS[@]}; ++i)); do
         if [[ ${COMP_WORDS[i]} != -* ]] && \
-           [[ ! "-C --cache-file -S --sort-table" =~ "${COMP_WORDS[i-1]}" ]]; then
+           [[ ! "-C --cache-file -S --sort-table -a --cache-age" =~ "${COMP_WORDS[i-1]}" ]]; then
             firstword=${COMP_WORDS[i]}
             break
         fi

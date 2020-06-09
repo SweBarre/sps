@@ -146,7 +146,7 @@ def test_cache_age_not_old(data):
     fn = tempfile.NamedTemporaryFile(delete=False)
     os.remove(fn.name)
     cache.save("product", fn.name, data["product"])
-    assert cache.age(fn.name, 60) == []
+    assert cache.age(fn.name, 60) == {}
     os.remove(fn.name)
 
 
@@ -154,4 +154,4 @@ def test_cache_age_old(data, mocker):
     mocker.patch("sps.cache.load")
     cache.load.return_value = data
     aged = cache.age("fake-file-name", 60)
-    assert aged == [data["age"]]
+    assert aged == data["age"]

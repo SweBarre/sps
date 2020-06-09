@@ -2,6 +2,7 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime
+from typing import Dict
 
 
 def save(key, filename, data):
@@ -56,7 +57,7 @@ def save(key, filename, data):
         sys.exit(13)
 
 
-def load(filename):
+def load(filename) -> Dict:
     """Load cache from filename
 
     The cache file is a json file and retruns a dictionary
@@ -78,6 +79,7 @@ def load(filename):
         if unable to decode cache file as JSON
     """
 
+    data = {}
     try:
         with open(filename, "r") as f:
             data = json.load(f)
@@ -87,9 +89,11 @@ def load(filename):
     except json.decoder.JSONDecodeError as err:
         print(f"Error: unable to parse {filename} as JSON, {err}", file=sys.stderr)
         sys.exit(1)
+    except FileNotFoundError:
+        pass
     return data
 
-def age(filename, age):
+def age(filename, age) -> Dict:
     """Check the age of the different elements in the cache
 
     Parameters
@@ -108,13 +112,14 @@ def age(filename, age):
     """
 
 
-    ret = []
+    ret = {}
     cache_data = load(filename)
     now = datetime.now()
-    for key, value in cache_data["age"].items():
-        cacheage = now - datetime.strptime(value, "%Y-%m-%d")
-        if cacheage.days > age:
-            ret.append({key: value})
+    if cache_data:
+        for key, value in cache_data["age"].items():
+            cacheage = now - datetime.strptime(value, "%Y-%m-%d")
+            if cacheage.days > age:
+                ret[key]=value
     return ret
 
 
