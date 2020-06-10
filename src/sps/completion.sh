@@ -38,11 +38,13 @@ SPS_COMPLETION_COMLPETE="\
     --help"
 
 SPS_PACKAGE_COMPLETE="\
+    --exact-match\
     --cache-age\
     --cache-file\
     --sort-table\
     --no-borders\
     --no-header\
+    --version\
     --help"
 
 SPS_PACKAGE_SORT_TABLE_COMPLETE="\
