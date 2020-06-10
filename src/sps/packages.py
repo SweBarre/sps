@@ -4,7 +4,7 @@ from sps.helpers import print_err
 
 
 def get(product, pattern, cache_filename):
-    """Get the packages from SUSE Customer Center 
+    """Get the packages information from SUSE Customer Center
     for a particular product
 
     Parameters

@@ -3,7 +3,12 @@ All notable changes will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- patchproduct search functionality
+- patch search functionality
 ### Changed
+- completion for bash
+### Removed
+- removed --short option for product
 
 ## [0.1.1]
 ### Added

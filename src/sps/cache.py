@@ -33,7 +33,7 @@ def save(key, filename, data):
     """
 
     cache_data = {}
-    if not key in ["product"]:
+    if not key in ["product", "patchproducts"]:
         print_err(f"trying to save cache with unknown key '{key}'")
         sys.exit(1)
     if not isinstance(data, list):

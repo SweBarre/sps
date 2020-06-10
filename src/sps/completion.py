@@ -1,6 +1,7 @@
 import sys
 import os
 from sps.helpers import print_err
+from sps import cache, patchproducts
 
 
 def get(cachefile, shell=None):
@@ -44,5 +45,24 @@ def get(cachefile, shell=None):
     except FileNotFoundError as err:
         print_err({err})
         sys.exit(2)
-    fc = fc.replace("{sps_cachefile}", cachefile)
+
+    data = cache.load(cachefile)
+    sps_patch_product_complete = " ".join(
+        patchproducts.short(data["patchproducts"], "name")
+    )
+    sps_patch_version_complete = " ".join(
+        patchproducts.short(data["patchproducts"], "version")
+    )
+    sps_patch_arch_complete = " ".join(
+        patchproducts.short(data["patchproducts"], "architecture")
+    )
+    products = []
+    for product in data["product"]:
+        products.append(product["identifier"])
+    sps_package_product_complete = " ".join(products)
+
+    fc = fc.replace("{sps_patch_product_complete}", sps_patch_product_complete)
+    fc = fc.replace("{sps_patch_version_complete}", sps_patch_version_complete)
+    fc = fc.replace("{sps_patch_arch_complete}", sps_patch_arch_complete)
+    fc = fc.replace("{sps_package_product_complete}", sps_package_product_complete)
     return fc
