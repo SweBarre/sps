@@ -3,6 +3,10 @@ All notable changes will be documented in this file.
 
 ## [Unreleased]
 ### Added
+### Changed
+
+## [0.1.1]
+### Added
 - added helpers print_err and print_warn
 - cache age check
 - --sort-table/-S option to product/package output
