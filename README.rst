@@ -12,7 +12,7 @@ Installing
 
 ::
 
-    pip install --user https://github.com/SweBarre/sps/raw/master/dist/sps-0.1.0-py36-none-any.whl
+    pip install --user https://github.com/SweBarre/sps/raw/master/dist/sps-0.2.0-py36-none-any.whl
 
 
 Usage
