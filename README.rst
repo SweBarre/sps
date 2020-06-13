@@ -1,8 +1,8 @@
 sps - SUSE P(roduct|ackage|atch) Search
 ========
 
-CLI searching for packages in SUSE products.
-It is a cli interface to the SUSE Customer Center search packages API https://scc.suse.com/packages
+CLI searching for packages and patches in SUSE products.
+It is a cli interface to the SUSE Customer Center search packages API https://scc.suse.com/packages and the https://scc.suse.com/patches API
 
 .. image:: https://asciinema.org/a/339205.svg
    :target: https://asciinema.org/a/339205
