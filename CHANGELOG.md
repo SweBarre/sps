@@ -3,6 +3,11 @@ All notable changes will be documented in this file.
 
 ## [Unreleased]
 ### Added
+### Changed
+### Removed
+
+## [0.2.0]
+### Added
 - patchproduct search functionality
 - patch search functionality
 ### Changed
