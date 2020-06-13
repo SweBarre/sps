@@ -69,3 +69,13 @@ def test_request_fetch_with_json_response(mocker):
     requests.get.return_value = response
     with pytest.raises(SystemExit):
         request.fetch("http://localhost")
+
+
+def test_request_with_html_response(mocker):
+    class Response:
+        status_code = 200
+        text = "Testing testing"
+
+    mocker.patch("requests.get", autospec=True)
+    requests.get.return_value = Response()
+    assert request.fetch("http://localhost", type="html") == "Testing testing"

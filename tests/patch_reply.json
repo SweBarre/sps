@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "total_pages": 9,
+    "current_page": 1,
+    "total_hits": 81,
+    "sorted_by": {
+      "_score": "desc"
+    }
+  },
+  "hits": [
+    {
+      "id": "132414",
+      "title": "Security update for the Linux Kernel",
+      "description": "description",
+      "ibs_id": "SUSE-SLE-HA-12-SP3-2020-1275",
+      "issued_at": "2020-05-14T09:34:05.000Z",
+      "patch_type": "security",
+      "severity": "important",
+      "product_friendly_names": [
+        "SUSE Linux Enterprise High Availability Extension 12 SP3",
+        "SUSE Linux Enterprise Server for SAP Applications 12 SP3"
+      ],
+      "reference_entry_identifiers": [
+        "CVE-2020-11609",
+        "1056134"
+      ],
+      "package_filenames": [
+        "ocfs2-kmp-default-4.4.180-94.116.1.ppc64le.rpm"
+      ],
+      "product_names": [
+        "SUSE Linux Enterprise Server for SAP Applications"
+      ],
+      "product_versions": [
+        "12 SP3"
+      ],
+      "product_architectures": [
+        "ppc64le"
+      ],
+      "severity_num": 70,
+      "is_restricted?": false
+    }
+  ]
+}
