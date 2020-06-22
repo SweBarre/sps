@@ -1,10 +1,14 @@
 import requests
 import sys
 import json
+from sps import __version__
 from sps.helpers import print_err
 
 
-headers = {"Accept": "application/vnd.scc.suse.com.v4+json"}
+headers = {
+    "Accept": "application/vnd.scc.suse.com.v4+json",
+    "User-Agent": f"sps/{__version__} https://github.com/SweBarre/sps",
+}
 
 
 def fetch(url, type="json"):

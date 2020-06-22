@@ -3,6 +3,7 @@ All notable changes will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Added sps User-Agent
 ### Changed
 ### Removed
 
