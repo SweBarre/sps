@@ -2,7 +2,7 @@ sps - SUSE P(roduct|ackage|atch) Search
 ========
 
 CLI searching for packages and patches in SUSE products.
-It is a cli interface to the SUSE Customer Center search packages API https://scc.suse.com/packages and the https://scc.suse.com/patches API
+It is a CLI interface to the SUSE Customer Center search packages API https://scc.suse.com/packages and the https://scc.suse.com/patches API
 
 .. image:: https://asciinema.org/a/339205.svg
    :target: https://asciinema.org/a/339205
@@ -234,7 +234,7 @@ Searching for patches uses a different API and also different product names, to 
       --no-header, -H       Do not print headers
 
 
-To seach for patch products 
+To search for patch products 
 
 ::
 
@@ -364,7 +364,7 @@ To display the patch details use the --detail option
     Released:	2020-06-12
     Details:
     This update for adns fixes the following issues:
-    
+
     - CVE-2017-9103,CVE-2017-9104,CVE-2017-9105,CVE-2017-9109: Fixed an issue in local recursive resolver
     which could have led to remote code execution (bsc#1172265).
     - CVE-2017-9106: Fixed an issue with upstream DNS data sources which could have led to denial of
@@ -389,7 +389,7 @@ To display the patch details use the --detail option
     Released:	2020-06-12
     Details:
     This update for adns fixes the following issues:
-    
+
     - CVE-2017-9103,CVE-2017-9104,CVE-2017-9105,CVE-2017-9109: Fixed an issue in local recursive resolver
     which could have led to remote code execution (bsc#1172265).
     - CVE-2017-9106: Fixed an issue with upstream DNS data sources which could have led to denial of
@@ -430,7 +430,7 @@ Run tests locally using ``make`` if virtualenv is active:
 
     $ make test
 
-If virtualenv isn’t active then use:
+If virtualenv isn't active then use:
 
 ::
 
