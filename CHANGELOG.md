@@ -5,6 +5,7 @@ All notable changes will be documented in this file.
 ### Added
 - Added sps User-Agent
 ### Changed
+- fixed bug [23](https://github.com/SweBarre/sps/issues/23), error thrown when cache file lacked information while running completion bash
 ### Removed
 
 ## [0.2.0]

@@ -80,3 +80,12 @@ def test_completion_sourcefile_not_found(mocker):
     mocker.patch("builtins.open", side_effect=FileNotFoundError("no such file"))
     with pytest.raises(SystemExit):
         completion.get("/path/to/cache/file", "bash")
+
+
+def test_completion_missing_cache_data(capsys):
+    completion.get("/patch/to/cache/file", "bash")
+    captured = capsys.readouterr()
+    assert (
+        captured.err
+        == "\x1b[0;30;43mWarning:\x1b[0m Patch product information not found in cache file\nTo enable completion for patch products run: sps patchproduct --update-cache\n\x1b[0;30;43mWarning:\x1b[0m Product information not found in cache file\nTo enable completion for products run: sps product --update-cache\n"
+    )
