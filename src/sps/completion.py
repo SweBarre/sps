@@ -1,6 +1,6 @@
 import sys
 import os
-from sps.helpers import print_err
+from sps.helpers import print_err, print_warn
 from sps import cache, patchproducts
 
 
@@ -47,18 +47,31 @@ def get(cachefile, shell=None):
         sys.exit(2)
 
     data = cache.load(cachefile)
-    sps_patch_product_complete = " ".join(
-        patchproducts.short(data["patchproducts"], "name")
-    )
-    sps_patch_version_complete = " ".join(
-        patchproducts.short(data["patchproducts"], "version")
-    )
-    sps_patch_arch_complete = " ".join(
-        patchproducts.short(data["patchproducts"], "architecture")
-    )
+    sps_patch_product_complete = ""
+    sps_patch_version_complete = ""
+    sps_patch_arch_complete = ""
+    try:
+        sps_patch_product_complete = " ".join(
+            patchproducts.short(data["patchproducts"], "name")
+        )
+        sps_patch_version_complete = " ".join(
+            patchproducts.short(data["patchproducts"], "version")
+        )
+        sps_patch_arch_complete = " ".join(
+            patchproducts.short(data["patchproducts"], "architecture")
+        )
+    except KeyError:
+        print_warn(
+            "Patch product information not found in cache file\nTo enable completion for patch products run: sps patchproduct --update-cache"
+        )
     products = []
-    for product in data["product"]:
-        products.append(product["identifier"])
+    try:
+        for product in data["product"]:
+            products.append(product["identifier"])
+    except KeyError:
+        print_warn(
+            "Product information not found in cache file\nTo enable completion for products run: sps product --update-cache"
+        )
     sps_package_product_complete = " ".join(products)
 
     fc = fc.replace("{sps_patch_product_complete}", sps_patch_product_complete)

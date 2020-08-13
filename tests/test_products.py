@@ -80,14 +80,12 @@ def test_products_get(data, mocker):
         products.get(None, "fake-file-name", False, False)
 
 
-def test_products_get_wrong_cache_data(data, mocker):
-    """
-    get will exit if no data field is found in response from cache
-    """
+def test_products_get_no_product_in_cache(mocker):
     mocker.patch("sps.cache.load", autospec=True)
-    cache.load.return_value = data
-    with pytest.raises(SystemExit):
-        products.get(None, __file__, False, False)
+    mocker.patch("sps.request.fetch", autospec=True)
+    cache.load.return_value = {}
+    products.get(None, __file__, False, False)
+    request.fetch.assert_called_with("https://scc.suse.com/api/package_search/products")
 
 
 def test_products_get_cache(data, mocker):
