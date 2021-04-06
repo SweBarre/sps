@@ -13,6 +13,7 @@ safety = "*"
 [packages]
 requests = "*"
 ptable = "*"
+PyYAML = ">=5.4"
 
 [requires]
 python_version = "3.6"
