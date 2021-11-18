@@ -7,7 +7,11 @@ from sps import completion, cache
 def data():
     return {
         "patchproducts": [
-            {"name": "Legacy Module", "version": "15 SP2", "architecture": "aarch64",},
+            {
+                "name": "Legacy Module",
+                "version": "15 SP2",
+                "architecture": "aarch64",
+            },
             {
                 "name": "SUSE Linux Enterprise Server for SAP Applications",
                 "version": "15 SP2",

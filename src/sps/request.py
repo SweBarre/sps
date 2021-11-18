@@ -18,7 +18,9 @@ def fetch(url, type="json"):
         print_err({err})
         sys.exit(1)
     if response.status_code != 200:
-        print_err(f"Got status code '{response.status_code}' from {url}",)
+        print_err(
+            f"Got status code '{response.status_code}' from {url}",
+        )
         sys.exit(1)
     if type == "json":
         try:

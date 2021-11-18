@@ -262,7 +262,11 @@ def main():
             table.field_names = ["Name", "Version", "Arch"]
             for product in products_data:
                 table.add_row(
-                    [product["name"], product["version"], product["architecture"],]
+                    [
+                        product["name"],
+                        product["version"],
+                        product["architecture"],
+                    ]
                 )
         if args.command == "patch":
             patches = patch.get(args)

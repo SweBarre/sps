@@ -13,7 +13,7 @@ def get(cachefile, shell=None):
         Path to cache file
     shell: str, optional
         Name of the shell to generate completion script for
-        if not provided the function will try to use the 
+        if not provided the function will try to use the
         SHELL environment varable
 
     Raises

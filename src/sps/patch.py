@@ -91,13 +91,13 @@ def get(args):
 def format_detail(patch):
     """Prints a formated detailed output of every patch
 
-    Parameters
-    ----------
-    patch: Dict
-        a dictionary containing patch infromation from SCC
+     Parameters
+     ----------
+     patch: Dict
+         a dictionary containing patch infromation from SCC
 
-   Returns
-   str
+    Returns
+    str
     """
 
     bugzilla = "\n"

@@ -160,8 +160,7 @@ def test_cache_lookup_product_notfound(data):
 
 
 def test_cache_age_not_old(data):
-    """
-    """
+    """ """
     fn = tempfile.NamedTemporaryFile(delete=False)
     os.remove(fn.name)
     cache.save("product", fn.name, data["product"])

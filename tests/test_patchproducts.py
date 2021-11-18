@@ -24,7 +24,11 @@ def data():
 @pytest.fixture
 def patchproducts_data():
     return [
-        {"name": "Legacy Module", "version": "15 SP2", "architecture": "aarch64",},
+        {
+            "name": "Legacy Module",
+            "version": "15 SP2",
+            "architecture": "aarch64",
+        },
         {
             "name": "SUSE Linux Enterprise Server for SAP Applications",
             "version": "15 SP2",
@@ -35,7 +39,11 @@ def patchproducts_data():
             "version": "12 SP1",
             "architecture": "x86_64",
         },
-        {"name": "Development Tools Module", "version": "15", "architecture": "s390x",},
+        {
+            "name": "Development Tools Module",
+            "version": "15",
+            "architecture": "s390x",
+        },
     ]
 
 
